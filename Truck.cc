@@ -8,7 +8,7 @@ Truck::Truck(Printer &prt, NameServer &nameServer, BottlingPlant &plant,
 				printer(&prt),nameServer(&nameServer),bottingPlant(&plant),
 				numVendingMachines(numVendingMachines),maxStockPerFlavour(maxStockPerFlavour)
 {
-	for (unsigned int i = 0;i < VendingMachine::NoOfFlavours;i++)
+	for (unsigned int i = 0;i < VendingMachine::Flavours::NoOfFlavours;i++)
 		cargo[i] = 0;
 }
 
@@ -28,10 +28,10 @@ void Truck::main()
 			// Going to each vending machine to restock
 			TruckDeliveryRoute: while (true)
 			{
-				unsigned int machineInventory[VendingMachine::NoOfFlavours] = vendingMachines[currentMachine]->inventory();
+				unsigned int machineInventory[VendingMachine::Flavours::NoOfFlavours] = vendingMachines[currentMachine]->inventory();
 				bool isCargoEmpty = true;
 				// Restocking the vending machine
-				TruckRestock: for (unsigned int i = 0;i < VendingMachine::NoOfFlavours;i++)
+				TruckRestock: for (unsigned int i = 0;i < VendingMachine::Flavours::NoOfFlavours;i++)
 				{
 					unsigned int restock = maxStockPerFlavour - machineInventory[i];
 					if (restock > cargo[i])

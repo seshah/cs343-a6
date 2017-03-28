@@ -10,7 +10,7 @@ _Task Truck
 {
 	const unsigned int numVendingMachines;
 	const unsigned int maxStockPerFlavour;
-	unsigned int cargo[VendingMachine::NoOfFlavours];
+	unsigned int cargo[VendingMachine::Flavours::NoOfFlavours];
 
 	Printer *printer;
 	NameServer *nameServer;

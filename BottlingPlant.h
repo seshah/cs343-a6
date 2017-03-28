@@ -3,7 +3,7 @@
 
 #include "Printer.h" // Printer
 #include "NameServer.h" // NameServer
-#include "VendingMachine.h" // VendingMachine::NoOfFlavours
+#include "VendingMachine.h" // VendingMachine::Flavours::NoOfFlavours
 
 _Task BottlingPlant
 {
@@ -13,7 +13,7 @@ _Task BottlingPlant
 	const unsigned int timeBetweenShipments;
 	bool isShuttingDown = false;
 
-	unsigned int produced[VendingMachine::NoOfFlavours];
+	unsigned int produced[VendingMachine::Flavours::NoOfFlavours];
 	Printer *printer;
 	NameServer *nameServer;
 	RandomGenerator *random;

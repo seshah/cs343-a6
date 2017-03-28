@@ -10,7 +10,7 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
 				 timeBetweenShipments(timeBetweenShipments)
 {
 	random = RandomGenerator::getInstance();
-	for (unsigned int i = 0;i < VendingMachine::NoOfFlavours;i++)
+	for (unsigned int i = 0;i < VendingMachine::Flavours::NoOfFlavours;i++)
 	{
 		produced[i] = 0;
 	}
@@ -19,7 +19,7 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
 // The production run for the bottling plant
 void BottlingPlant::runProduce()
 {
-	for (unsigned int i = 0;i < VendingMachine::NoOfFlavours;i++)
+	for (unsigned int i = 0;i < VendingMachine::Flavours::NoOfFlavours;i++)
 	{
 		produced[i] = random->generator(0,maxShippedPerFlavour);
 	}
@@ -54,7 +54,7 @@ void BottlingPlant::getShipment( unsigned int cargo[] )
 	if (isShuttingDown)
 		_Resume Shutdown();
 
-	for (unsigned int i = 0;i < VendingMachine::NoOfFlavours;i++)
+	for (unsigned int i = 0;i < VendingMachine::Flavours::NoOfFlavours;i++)
 	{
 		cargo[i] = produced[i];
 		produced[i] = 0;
