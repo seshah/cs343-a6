@@ -19,6 +19,7 @@ _Task VendingMachine
 	};                    					  // flavours of soda (YOU DEFINE)
     _Event Funds {};                          // insufficient funds
     _Event Stock {};                          // out of stock for particular flavour
+
     VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
                     unsigned int maxStockPerFlavour );
     void buy( Flavours flavour, WATCard &card );
@@ -31,6 +32,8 @@ _Task VendingMachine
 	const unsigned int sodaCost;
 	const unsigned int maxStockPerFlavour;
 	unsigned int stockPerFlavour[Flavours::NoOfFlavours];
+    unsigned int mostRecentlyBoughtFlavour;
+    bool buyOutOfFunds, buyOutOfStock;
 
 	Printer *printer;
 	NameServer *nameServer;
