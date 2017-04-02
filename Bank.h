@@ -3,9 +3,12 @@
 
 
 
-_Monitor Bank {
+_Monitor Bank
+{
 	unsigned int numStudents
 	unsigned int *accounts;
+	uCondition *moneyWait;
+	unsigned int *moneyNeeded;
 	
   public:
 	~Bank() 
