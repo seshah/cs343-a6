@@ -11,20 +11,25 @@ using namespace std;
 		while(true) 
 		{
 			int lost = random->generator(1, 6);
-			j = requestWob;
+			j = requestWork;
 			printer->print(Printer::Courier,j->sid, 't', j->amount); 
+			int balance = bank->getBalance(j->sid);
 			bank->withdraw(j->sid, j->amount);
 			if (lost == 3) 
 			{
 				printer->print(Printer::Courier,j->sid, 'L');  
-				j->result = WATCardOffice::Lost;
+				j->result.exception(new WATCardOffice::Lost);
 				delete j->card;
 			}
 			else
 			{
 				j->card->deposit(amount);
+				j->result.delivery(j->card);
 				printer->print(Printer::WATCardOffice, j->sid, 'T', j->amount);
 			}
+			// done with job, need to delete it
+			delete j;
+
 		}	
 		printer->print(Printer::Courier, 'F');
 	} // Courrier::main
@@ -45,11 +50,11 @@ using namespace std;
 			{ 
 				// signal requestJob
 			}
-			or _Accept(tranfer)
+			or _Accept(transfer)
 			{
 				// signal requestJob
 			}
-			or _Accept(requestWork)
+			or _When( !jobs.empty() )  _Accept(requestWork)
 			{
 				printer->print(Printer::WATCardOffice, 'W');
 			}
