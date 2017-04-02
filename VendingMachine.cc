@@ -23,7 +23,7 @@ void VendingMachine::main()
 	while (true)
 	{
 		// Only allow deconstruction when its not restocking, since the stock array is given to restocker for direct manipulation
-		_When(~isRestocking) _Accept(~VendingMachine)
+		_When(!isRestocking) _Accept(~VendingMachine)
 		{}
 		or _Accept(inventory)
 		{
@@ -36,7 +36,7 @@ void VendingMachine::main()
 			isRestocking = false;
 		}
 		// Cannot allow people to buy while machine is restocking
-		or _When(~isRestocking) _Accept(buy)
+		or _When(!isRestocking) _Accept(buy)
 		{
 			if (buyOutOfFunds)
 				_Resume Funds() _At *lastBuyer;
