@@ -1,9 +1,12 @@
 #ifndef __BOTTLINGPLANT_H__
 #define __BOTTLINGPLANT_H__
 
-#include "Printer.h" // Printer
-#include "NameServer.h" // NameServer
+#include "Printer.h"
 #include "VendingMachine.h" // VendingMachine::Flavours::NoOfFlavours
+
+// Forward Declarations
+_Task NameServer;
+_Task Truck;
 
 _Task BottlingPlant
 {

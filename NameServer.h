@@ -2,7 +2,9 @@
 #define __NAMESERVER_H__
 
 #include "Printer.h"
-#include "VendingMachine.h"
+
+// Forward declarations
+_Task VendingMachine;
 
 _Task NameServer
 {

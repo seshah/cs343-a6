@@ -1,6 +1,7 @@
 #include "BottlingPlant.h"
 #include "RandomGenerator.h" // RandomGenerator
-#include "Truck.h" // Truck
+#include "NameServer.h"
+#include "Truck.h"
 
 BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
                  unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,

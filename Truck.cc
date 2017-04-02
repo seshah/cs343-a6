@@ -1,4 +1,5 @@
 #include "Truck.h"
+#include "NameServer.h"
 #include "BottlingPlant.h"
 #include "RandomGenerator.h"
 #include "VendingMachine.h" // VendingMachine::NoOfFlavours

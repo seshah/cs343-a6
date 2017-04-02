@@ -1,4 +1,5 @@
 #include "NameServer.h"
+#include "VendingMachine.h"
 
 NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents ):
 						printer(&prt),numVendingMachines(numVendingMachines),numStudents(numStudents)
