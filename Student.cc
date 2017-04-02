@@ -19,13 +19,13 @@ void Student::main()
 	const unsigned int numPurchases = random->generator(1,maxPurchases);
 	const unsigned int favouriteFlavour = random->generator(0, ((unsigned int)VendingMachine::Flavours::NoOfFlavours) - 2);
 
-	printer->print(Printer::Kind::Student, 'S', favouriteFlavour, numPurchases);
+	printer->print(Printer::Kind::Student, id, 'S', favouriteFlavour, numPurchases);
 
 	WATCard::FWATCard watCard = cardOffice->create(id, 5);
 	WATCard::FWATCard giftCard = groupoff->giftCard();
 	VendingMachine *vendingMachine = nameServer->getMachine(id);
 
-	printer->print(Printer::Kind::Student, 'V', vendingMachine->getId());
+	printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
 
 	for (unsigned int i = 0;i < numPurchase;i++)
 	{
@@ -45,10 +45,10 @@ void Student::main()
 						break CardWait;
 					}
 				}
-				// WATCard was lost, so create a new one and wait for it again
-				_CatchResume(WATCardOffice::Lost)
+				// WATCard was lost, so create a new one
+				catch (WATCardOffice::Lost)
 				{
-					printer->print(Printer::Kind::Student, 'L');
+					printer->print(Printer::Kind::Student, id, 'L');
 					watCard = cardOffice->create(id, 5);
 				}
 			}
@@ -74,27 +74,30 @@ void Student::main()
 		{
 			// Chosen soda was out of stock, so look for another machine
 			vendingMachine = nameServer->getMachine(id);
-			printer->print(Printer::Kind::Student, 'V', vendingMachine->getId());
+			printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
 		}
 		_CatchResume(VendingMachine::Funds)
 		{
+			// Assumption: gift card should always be one soda and done
 			cardOffice->transfer(id, vendingMachine->cost(), cardToUse)
-			// TODO : What if it is a giftcard?
 		}
 
 		if (giftCard.available() && cardToUse == giftCard)
 		{
-			printer->print(Printer::Kind::Student, 'G', flavourToBuy, cardToUse->getBalance());
+			printer->print(Printer::Kind::Student, id, 'G', flavourToBuy, cardToUse->getBalance());
 			giftCard.reset();
 		}
 		else
-			printer->print(Printer::Kind::Student, 'B', flavourToBuy, cardToUse->getBalance());
+			printer->print(Printer::Kind::Student, id, 'B', flavourToBuy, cardToUse->getBalance());
 
 		// Drinking the soda
 		yield();
 
 	}
 
-	printer->print(Printer::Kind::Student, 'F');
+	if (watCard.available())
+		delete watCard;
+
+	printer->print(Printer::Kind::Student, id, 'F');
 
 }
