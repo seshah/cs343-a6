@@ -3,14 +3,19 @@
 
 
 
-_Monitor Bank {
+_Monitor Bank
+{
 	unsigned int numStudents
 	unsigned int *accounts;
+	uCondition *moneyWait;
+	unsigned int *moneyNeeded;
 	
   public:
 	~Bank() 
 	{ 
 		delete [] accounts;  // may not be needed if stack is used
+		delete [] moneyWait;
+		delete [] moneyNeeded;
 	}
     Bank( unsigned int numStudents );
     void deposit( unsigned int id, unsigned int amount );

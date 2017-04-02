@@ -2,7 +2,7 @@
 #include "NameServer.h"
 #include "WATCardOffice.h"
 #include "WATCard.h"
-#include "Groupoff.h"
+#include "GroupOff.h"
 #include "VendingMachine.h"
 #include "RandomGenerator.h" // RandomGenerator
 
@@ -16,14 +16,16 @@ Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffic
 
 void Student::main()
 {
-	const unsigned int numPurchases = random->generator(1,maxPurchases);
-	const unsigned int favouriteFlavour = random->generator(0, ((unsigned int)VendingMachine::Flavours::NoOfFlavours) - 2);
+	WATCard::FWATCard watCard = cardOffice->create(id, 5);
+	WATCard::FWATCard giftCard = groupoff->giftCard();
+	WATCard *pWATCard; // For destructing the last used WAT card given by the future
 
 	printer->print(Printer::Kind::Student, id, 'S', favouriteFlavour, numPurchases);
 
-	WATCard::FWATCard watCard = cardOffice->create(id, 5);
-	WATCard *pWATCard;
-	WATCard::FWATCard giftCard = groupoff->giftCard();
+	const unsigned int numPurchases = random->generator(1,maxPurchases);
+	const unsigned int favouriteFlavour = random->generator(0, ((unsigned int)VendingMachine::Flavours::NoOfFlavours) - 2);
+
+
 	VendingMachine *vendingMachine = nameServer->getMachine(id);
 
 	printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
