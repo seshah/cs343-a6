@@ -26,37 +26,39 @@ void Student::main()
 	VendingMachine *vendingMachine = nameServer->getMachine(id);
 
 	printer->print(Printer::Kind::Student, 'V', vendingMachine->getId());
-	bool isUsingGiftCard;
 
-	// TODO: Make a local function Student::buy, so that watCard and giftCard can use that repeated code with their own try/catch handlers
 	for (unsigned int i = 0;i < numPurchase;i++)
 	{
 		yield(random->generator(1,10));
 
-		WATCard *cardToUse;
 		// Determining what card is available to use
-		_Select(watCard.available())
+		WATCard *cardToUse;
+		CardWait: while (true)
 		{
-			try
+			_Select(watCard.available())
 			{
-				_Activate
+				try
 				{
-					cardToUse = watCard();
-					isUsingGiftCard = false;
+					_Activate
+					{
+						cardToUse = watCard();
+						break CardWait;
+					}
+				}
+				// WATCard was lost, so create a new one and wait for it again
+				_CatchResume(WATCardOffice::Lost)
+				{
+					printer->print(Printer::Kind::Student, 'L');
+					watCard = cardOffice->create(id, 5);
 				}
 			}
-			// WATCard was lost, so create a new one and wait for it again
-			_CatchResume(WATCardOffice::Lost)
+			or _Select(giftCard.available())
 			{
-				printer->print(Printer::Kind::Student, 'L');
-				watCard = cardOffice->create(id, 5);
+				cardToUse = giftCard();
+				break CardWait;
 			}
 		}
-		or _Select(giftCard.available())
-		{
-			cardToUse = giftCard();
-			isUsingGiftCard = true;
-		}
+
 		// Determining whether to buy favourite flavour or the new one
 		VendingMachine::Flavours flavourToBuy = (random->generator(1,4) == 1) ? VendingMachine::Flavours::DrSalt : static_cast<VendingMachine::Flavours>(favouriteFlavour);
 
@@ -76,18 +78,23 @@ void Student::main()
 		}
 		_CatchResume(VendingMachine::Funds)
 		{
-			if (!isUsingGiftCard)
-			{
-				cardOffice->transfer(id, vendingMachine->cost(), cardToUse)
-			}
+			cardOffice->transfer(id, vendingMachine->cost(), cardToUse)
 			// TODO : What if it is a giftcard?
 		}
+
+		if (giftCard.available() && cardToUse == giftCard)
+		{
+			printer->print(Printer::Kind::Student, 'G', flavourToBuy, cardToUse->getBalance());
+			giftCard.reset();
+		}
+		else
+			printer->print(Printer::Kind::Student, 'B', flavourToBuy, cardToUse->getBalance());
 
 		// Drinking the soda
 		yield();
 
 	}
 
-	printer->print(Printer::Kind::Student, 'F', vendingMachine->getId());
+	printer->print(Printer::Kind::Student, 'F');
 
 }
