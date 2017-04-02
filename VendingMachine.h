@@ -2,11 +2,14 @@
 #define __VENDINGMACHINE_H__
 
 #include "Printer.h"
-#include "NameServer.h"
+
+// Forward declarations
+_Task NameServer;
 
 _Task VendingMachine
 {
   public:
+	// Assumption: DrSalt is the last soda in the enum and is not the only soda in the enum
     enum Flavours
 	{
     	Blues,
@@ -19,6 +22,7 @@ _Task VendingMachine
 	};                    					  // flavours of soda (YOU DEFINE)
     _Event Funds {};                          // insufficient funds
     _Event Stock {};                          // out of stock for particular flavour
+
     VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
                     unsigned int maxStockPerFlavour );
     void buy( Flavours flavour, WATCard &card );
@@ -31,6 +35,9 @@ _Task VendingMachine
 	const unsigned int sodaCost;
 	const unsigned int maxStockPerFlavour;
 	unsigned int stockPerFlavour[Flavours::NoOfFlavours];
+    unsigned int mostRecentlyBoughtFlavour;
+    bool buyOutOfFunds, buyOutOfStock;
+    uBaseTask *lastBuyer;
 
 	Printer *printer;
 	NameServer *nameServer;

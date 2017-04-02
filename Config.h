@@ -2,7 +2,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-struct ConfigParms {
+struct ConfigParms
+{
     unsigned int sodaCost;				// MSRP per bottle
     unsigned int numStudents;				// number of students to create
     unsigned int maxPurchases;				// maximum number of bottles a student purchases

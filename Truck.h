@@ -2,9 +2,10 @@
 #define __TRUCK_H__
 
 #include "Printer.h"
-#include "NameServer.h"
-#include "BottlingPlant.h"
 #include "VendingMachine.h" // VendingMachine::NoOfFlavours
+
+_Task NameServer;
+_Task BottlingPlant;
 
 _Task Truck
 {
