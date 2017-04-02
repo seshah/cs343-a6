@@ -22,6 +22,7 @@ void Student::main()
 	printer->print(Printer::Kind::Student, id, 'S', favouriteFlavour, numPurchases);
 
 	WATCard::FWATCard watCard = cardOffice->create(id, 5);
+	WATCard *pWATCard;
 	WATCard::FWATCard giftCard = groupoff->giftCard();
 	VendingMachine *vendingMachine = nameServer->getMachine(id);
 
@@ -41,7 +42,8 @@ void Student::main()
 				{
 					_Activate
 					{
-						cardToUse = watCard();
+						pWATCard = watCard();
+						cardToUse = pWATCard;
 						break CardWait;
 					}
 				}
@@ -95,7 +97,8 @@ void Student::main()
 
 	}
 
-	if (watCard.available())
+	// Making sure that the last WAT card that was being used is deleted
+	if (pWATCard != NULL)
 		delete watCard;
 
 	printer->print(Printer::Kind::Student, id, 'F');
