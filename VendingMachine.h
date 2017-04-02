@@ -34,6 +34,7 @@ _Task VendingMachine
 	unsigned int stockPerFlavour[Flavours::NoOfFlavours];
     unsigned int mostRecentlyBoughtFlavour;
     bool buyOutOfFunds, buyOutOfStock;
+    uBaseTask *lastBuyer;
 
 	Printer *printer;
 	NameServer *nameServer;

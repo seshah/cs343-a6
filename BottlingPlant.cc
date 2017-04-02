@@ -41,8 +41,10 @@ void BottlingPlant::main()
 		_Accept(~BottlingPlant)
 		{
 			isShuttingDown = true;
-			// Wait for the truck to come back to tell them to stop
-			_Accept (getShipment){}
+
+			// Tell truck of the shutdown and make sure they receive it.
+			_Resume Shutdown() at truck;
+
 			break PlantProduction;
 		}
 		// Wait for the truck to pick up current shipment
@@ -58,9 +60,6 @@ void BottlingPlant::main()
 
 void BottlingPlant::getShipment( unsigned int cargo[] )
 {
-	if (isShuttingDown)
-		_Resume Shutdown();
-
 	for (unsigned int i = 0;i < VendingMachine::Flavours::NoOfFlavours;i++)
 	{
 		cargo[i] = produced[i];

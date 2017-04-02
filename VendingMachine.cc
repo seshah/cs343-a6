@@ -37,7 +37,11 @@ void VendingMachine::main()
 		// Cannot allow people to buy while machine is restocking
 		or _When(~isRestocking) _Accept(buy)
 		{
-			if (!buyOutOfFunds && !buyOutOfStock)
+			if (buyOutOfFunds)
+				_Resume Funds() _At *lastBuyer;
+			if (buyOutOfStock)
+				_Resume Stock() _At *lastBuyer;
+			else
 				printer->printer(Printer::Kind::Vending, id, 'B', mostRecentlyBoughtFlavour);
 
 			// Reset the flags for next usage
@@ -49,18 +53,21 @@ void VendingMachine::main()
 
 void VendingMachine::buy( Flavours flavour, WATCard &card )
 {
+	// Saves the student task in case an exception needs to be raised on it
+	lastBuyer = &uThisTask();
+
 	// Check if desired flavour is in stock
 	if (stockPerFlavour[(unsigned int)flavour] == 0)
 	{
 		buyOutOfStock = true;
-		_Resume Stock(); // TODO: Check if _Resume or _Throw is needed (and check if this is correct task stack)
+		return;
 	}
 
 	// Check if there is enough funds in the card
 	if (card.getBalance() < sodaCost)
 	{
 		buyOutOfFunds = true;
-		_Resume Stock(); // TODO: Check if _Resume or _Throw is needed (and check if this is correct task stack)
+		return;
 	}
 
 	card.withdraw(sodaCost);
