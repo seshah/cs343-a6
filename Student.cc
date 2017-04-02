@@ -2,7 +2,7 @@
 #include "NameServer.h"
 #include "WATCardOffice.h"
 #include "WATCard.h"
-#include "Groupoff.h"
+#include "GroupOff.h"
 #include "VendingMachine.h"
 #include "RandomGenerator.h" // RandomGenerator
 

@@ -2,7 +2,7 @@
 #include "NameServer.h"
 #include "VendingMachine.h"
 #include "Student.h"
-#include "Groupoff.h"
+#include "GroupOff.h"
 #include "Parent.h"
 #include "Bank.h"
 #include "WATCardOffice.h"
