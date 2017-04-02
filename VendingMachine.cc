@@ -43,7 +43,10 @@ void VendingMachine::main()
 			if (buyOutOfStock)
 				_Resume Stock() _At *lastBuyer;
 			else
+			{
+				stockPerFlavour[mostRecentlyBoughtFlavour]--;
 				printer->printer(Printer::Kind::Vending, id, 'B', mostRecentlyBoughtFlavour);
+			}
 
 			// Reset the flags for next usage
 			buyOutOfFunds = false;
@@ -73,7 +76,7 @@ void VendingMachine::buy( Flavours flavour, WATCard &card )
 
 	card.withdraw(sodaCost);
 	mostRecentlyBoughtFlavour = (unsigned int)flavour;
-	stockPerFlavour[(unsigned int)flavour]--;
+
 }
 
 unsigned int *VendingMachine::inventory()

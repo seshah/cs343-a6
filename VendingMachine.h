@@ -9,6 +9,7 @@ _Task NameServer;
 _Task VendingMachine
 {
   public:
+	// Assumption: DrSalt is the last soda in the enum and is not the only soda in the enum
     enum Flavours
 	{
     	Blues,
