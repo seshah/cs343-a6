@@ -17,7 +17,6 @@ _Task Student
 	const unsigned int id;
 	const unsigned int maxPurchases;
 
-	_Event BuyRetry{};
 	RandomGenerator *random;
 
     void main();
