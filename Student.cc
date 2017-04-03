@@ -68,58 +68,30 @@ void Student::main()
 		// Determining whether to buy favourite flavour or the new one
 		VendingMachine::Flavours flavourToBuy = (random->generator(1,4) == 1) ? VendingMachine::Flavours::DrSalt : static_cast<VendingMachine::Flavours>(favouriteFlavour);
 
-/*
-<<<<<<< HEAD
+		BuyAttempts: while (true)
+		{
+			try
+			{
+				_Enable
+				{
 					// Attempting to buy the chosen soda
 					vendingMachine->buy(flavourToBuy, *(cardToUse));
-					yield(); // In case an exception is thrown
 					break BuyAttempts;
 				}
-			
 			}
-			_CatchResume(VendingMachine::Stock)
+			catch(VendingMachine::Stock)
 			{
 				// Chosen soda was out of stock, so look for another machine
 				vendingMachine = nameServer->getMachine(id);
 				printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
-				throw BuyRetry();
 			}
-			_CatchResume(VendingMachine::Funds)	
+			catch(VendingMachine::Funds)
 			{
 				// Assumption: gift card should always be one soda and done
 				watCard = cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
-				throw BuyRetry();
-			}		
-			catch (BuyRetry)
-=======*/
-		try
-		{
-			_Enable
-//>>>>>>> 72a9d3b13a2bb27ff495cc14c95c4cd6fc01557d
-			{
-
-				// Attempting to buy the chosen soda
-				vendingMachine->buy(flavourToBuy, *(cardToUse));
-				yield(); // In case an exception is thrown
+				pWATCard = watCard();
+				cardToUse = watCard;
 			}
-
-		}
-		_CatchResume(VendingMachine::Stock)
-		{
-			// Chosen soda was out of stock, so look for another machine
-			vendingMachine = nameServer->getMachine(id);
-			printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
-			// Attempting to buy the chosen soda
-			vendingMachine->buy(flavourToBuy, *(cardToUse));
-			yield(); // In case an exception is thrown
-		}
-		_CatchResume(VendingMachine::Funds)
-		{
-			// Assumption: gift card should always be one soda and done
-			cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
-			// Attempting to buy the chosen soda
-			vendingMachine->buy(flavourToBuy, *(cardToUse));
-			yield(); // In case an exception is thrown
 		}
 
 		if (giftCard.available() && cardToUse == giftCard)

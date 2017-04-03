@@ -10,8 +10,6 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
 {
 	for (unsigned int i = 0;i < Flavours::NoOfFlavours;i++)
 		stockPerFlavour[i] = 0;
-	buyOutOfFunds = false;
-	buyOutOfStock = false;
 }
 
 void VendingMachine::main()
@@ -39,23 +37,11 @@ void VendingMachine::main()
 		// Cannot allow people to buy while machine is restocking
 		or _When(!isRestocking) _Accept(buy)
 		{
-			if (buyOutOfFunds)
-			{
-				_Resume Funds() _At *lastBuyer;
-			}
-			if (buyOutOfStock)
-			{
-				_Resume Stock() _At *lastBuyer;
-			}
-			else
+			if (!buyFailed)
 			{
 				stockPerFlavour[mostRecentlyBoughtFlavour]--;
 				printer->print(Printer::Kind::Vending, id, 'B', mostRecentlyBoughtFlavour);
 			}
-
-			// Reset the flags for next usage
-			buyOutOfFunds = false;
-			buyOutOfStock = false;
 		}
 	}
 	printer->print(Printer::Kind::Vending,id,'F');
@@ -69,20 +55,22 @@ void VendingMachine::buy( Flavours flavour, WATCard &card )
 	// Check if desired flavour is in stock
 	if (stockPerFlavour[(unsigned int)flavour] == 0)
 	{
-		buyOutOfStock = true;
-		return;
+		buyFailed = true;
+		uRendezvousAcceptor();
+		_Throw Stock();
 	}
 
 	// Check if there is enough funds in the card
 	if (card.getBalance() < sodaCost)
 	{
-		buyOutOfFunds = true;
-		return;
+		buyFailed = true;
+		uRendezvousAcceptor();
+		_Throw Funds();
 	}
 
 	card.withdraw(sodaCost);
 	mostRecentlyBoughtFlavour = (unsigned int)flavour;
-
+	buyFailed = false;
 }
 
 unsigned int *VendingMachine::inventory()

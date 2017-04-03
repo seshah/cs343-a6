@@ -41,17 +41,9 @@ void BottlingPlant::main()
 		_Accept(~BottlingPlant)
 		{
 			isShuttingDown = true;
-
 			// Tell truck of the shutdown and make sure they receive it.
-		//	_Resume Shutdown() _At truck;
-			try
-			{
-				_Accept(getShipment);
-			}
-			catch (uMutexFailure::RendezvousFailure)
-			{
-				break PlantProduction;
-			}
+			_Accept(getShipment);
+			break PlantProduction;
 		}
 		// Wait for the truck to pick up current shipment
 		or _Accept(getShipment)
@@ -67,7 +59,11 @@ void BottlingPlant::main()
 
 void BottlingPlant::getShipment( unsigned int cargo[] )
 {
-	if (isShuttingDown) throw Shutdown();
+	if (isShuttingDown)
+	{
+		uRendezvousAcceptor();
+		_Throw Shutdown();
+	}
 	for (unsigned int i = 0;i < VendingMachine::Flavours::NoOfFlavours;i++)
 	{
 		cargo[i] = produced[i];
