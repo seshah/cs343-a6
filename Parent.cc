@@ -16,7 +16,7 @@ void Parent::main()
 		}
 		_Else
 		{
-			unsigned int student = random->generator(0, numStudents);
+			unsigned int student = random->generator(0, numStudents-1);
 			unsigned int amount = random->generator(1,3); 
 			yield(parentalDelay);
 			printer->print(Printer::Kind::Parent, 'D', student, amount); // deposit gift
