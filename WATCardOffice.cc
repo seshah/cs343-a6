@@ -7,24 +7,31 @@ void WATCardOffice::Courier::main()
 	printer->print(Printer::Kind::Courier, id, 'S');
 	while(true)
 	{
-		int lost = random->generator(1, 6);
-		j = cardOffice->requestWork();
-		printer->print(Printer::Kind::Courier, id, 't', j->sid, j->amount);
-		bank->withdraw(j->sid, j->amount);
-		if (lost == 3)
+		_Accept( ~Courier ) 
 		{
-			printer->print(Printer::Courier, id, 'L', j->sid);
-			j->result.exception(new WATCardOffice::Lost);
-			delete j->card;
+			break;
 		}
-		else
+		_Else 
 		{
-			j->card->deposit(j->amount);
-			j->result.delivery(j->card);
-			printer->print(Printer::Kind::Courier, id, 'T', j->sid, j->amount);
+			int lost = random->generator(1, 6);
+			j = cardOffice->requestWork();
+			printer->print(Printer::Kind::Courier, id, 't', j->sid, j->amount);
+			bank->withdraw(j->sid, j->amount);
+			if (lost == 3)
+			{
+				printer->print(Printer::Kind::Courier, id, 'L', j->sid);
+				j->result.exception(new WATCardOffice::Lost);
+				delete j->card;
+			}
+			else
+			{
+				j->card->deposit(j->amount);
+				j->result.delivery(j->card);
+				printer->print(Printer::Kind::Courier, id, 'T', j->sid, j->amount);
+			}
+			// done with job, need to delete it
+			delete j;
 		}
-		// done with job, need to delete it
-		delete j;
 
 	}
 	printer->print(Printer::Kind::Courier, id, 'F');
@@ -41,13 +48,9 @@ void WATCardOffice::main()
 		_When(jobs.empty()) _Accept(~WATCardOffice)
 		{}
 		or _Accept(create)
-		{
-			// signal requestJob
-		}
+		{}
 		or _Accept(transfer)
-		{
-			// signal requestJob
-		}
+		{}
 		or _When( !jobs.empty() )  _Accept(requestWork)
 		{
 			printer->print(Printer::Kind::WATCardOffice, 'W');

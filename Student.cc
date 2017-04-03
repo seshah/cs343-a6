@@ -69,44 +69,49 @@ void Student::main()
 		VendingMachine::Flavours flavourToBuy = (random->generator(1,4) == 1) ? VendingMachine::Flavours::DrSalt : static_cast<VendingMachine::Flavours>(favouriteFlavour);
 
 		BuyAttempts: while (true)
-		{
-			_Enable
+		{		
+			try
 			{
-				try
+				_Enable
 				{
+
 					// Attempting to buy the chosen soda
 					vendingMachine->buy(flavourToBuy, *(cardToUse));
 					yield(); // In case an exception is thrown
 					break BuyAttempts;
 				}
-				_CatchResume(VendingMachine::Stock)
-				{
-					// Chosen soda was out of stock, so look for another machine
-					vendingMachine = nameServer->getMachine(id);
-					printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
-					throw BuyRetry();
-				}
-				_CatchResume(VendingMachine::Funds)
-				{
-					// Assumption: gift card should always be one soda and done
-					cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
-					throw BuyRetry();
-				}
-				catch (BuyRetry)
-				{
+			
+			}
+			_CatchResume(VendingMachine::Stock)
+			{
+				// Chosen soda was out of stock, so look for another machine
+				vendingMachine = nameServer->getMachine(id);
+				printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
+				throw BuyRetry();
+			}
+			_CatchResume(VendingMachine::Funds)	
+			{
+				// Assumption: gift card should always be one soda and done
+				cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
+				throw BuyRetry();
+			}		
+			catch (BuyRetry)
+			{
 					/* NOTES:
 					 * - catch is not catching Stock or Funds, so resorting to throwing a new event on _CatchResume
 					 * - don't want resumption because resumption will exit and continue the loop
 					 * CONCLUSION:
 					 * - not the best looking solution, but above points is not what is desired
 					 */
-				}
+			
 			}
+			
 		}
 
 		if (giftCard.available() && cardToUse == giftCard)
 		{
 			printer->print(Printer::Kind::Student, id, 'G', flavourToBuy, cardToUse->getBalance());
+			delete cardToUse;
 			giftCard.reset();
 		}
 		else
