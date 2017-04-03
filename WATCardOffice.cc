@@ -13,24 +13,34 @@ void WATCardOffice::Courier::main()
 		}
 		_Else 
 		{
-			int lost = random->generator(1, 6);
-			j = cardOffice->requestWork();
-			printer->print(Printer::Kind::Courier, id, 't', j->sid, j->amount);
-			bank->withdraw(j->sid, j->amount);
-			if (lost == 3)
-			{
-				printer->print(Printer::Kind::Courier, id, 'L', j->sid);
-				j->result.exception(new WATCardOffice::Lost);
-				delete j->card;
-			}
-			else
-			{
-				j->card->deposit(j->amount);
-				j->result.delivery(j->card);
-				printer->print(Printer::Kind::Courier, id, 'T', j->sid, j->amount);
-			}
-			// done with job, need to delete it
-			delete j;
+	//		try
+	//		{
+				int lost = random->generator(1, 6);
+				j = cardOffice->requestWork();
+				if (j->card == NULL)
+				{
+					delete j;
+					 break;
+				}
+				printer->print(Printer::Kind::Courier, id, 't', j->sid, j->amount);
+				bank->withdraw(j->sid, j->amount);
+				if (lost == 3)
+				{
+					printer->print(Printer::Kind::Courier, id, 'L', j->sid);
+					j->result.exception(new WATCardOffice::Lost);
+					delete j->card;
+				}
+				else
+				{
+					j->card->deposit(j->amount);
+					j->result.delivery(j->card);
+					printer->print(Printer::Kind::Courier, id, 'T', j->sid, j->amount);
+				}
+				// done with job, need to delete it
+				delete j;
+	//		}
+	//		catch(WATCardOffice::Shutdown)
+	//		{}
 		}
 
 	}
@@ -46,12 +56,34 @@ void WATCardOffice::main()
 	{
 		// only allow destructor when queue is empty. i.e no jobs left to do
 		_Accept(~WATCardOffice)
-		{break;}
+		{	
+//			isShuttingDown = true;
+			for( unsigned int i = 0; i < numCouriers; i++ )
+			{
+				jobs.push(new Job(-1, -1, NULL));
+				 _Accept(requestWork);
+			}
+			for(unsigned int i = 0; i < numCouriers; i++) delete listOfCouriers[i];
+			delete [] listOfCouriers;
+
+		//	isShuttingDown = true;
+		//	for(unsigned int i = 0 ; i < numCouriers ; i++) 
+		//	{
+	 	//		try
+		//		{
+		//			_Accept(requestWork);
+		//		}
+		//		catch(uMutexFailure::RendezvousFailure)
+		//		{	
+					break;
+		//		}
+		//	}
+		} 
 		or _Accept(create)
 		{}
 		or _Accept(transfer)
 		{}
-		or _When( !jobs.empty() )  _Accept(requestWork)
+		or _When( !jobs.empty() ) _Accept(requestWork)
 		{
 			printer->print(Printer::Kind::WATCardOffice, 'W');
 		}
@@ -69,6 +101,7 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
 		numCouriers(numCouriers)
 {
 	listOfCouriers = new Courier*[numCouriers];
+//	isShuttingDown = false;
 } // WATCardOffice
 
 
@@ -81,8 +114,9 @@ WATCardOffice::~WATCardOffice()
 		jobs.pop();
 		delete temp;
 	}
-	for(unsigned int i = 0; i < numCouriers; i++) delete listOfCouriers[i];
-	delete [] listOfCouriers;
+/*	for(unsigned int i = 0; i < numCouriers; i++) delete listOfCouriers[i];
+	delete [] listOfCouriers; 
+*/
 } // ~WATCardOffice
 
 // Student calls create, new Job is created and pushed on jobs, returns FWATcard
@@ -108,12 +142,9 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
 // Courier calls requestWork, waits if jobs is empty, returns Job otherwise
 WATCardOffice::Job *WATCardOffice::requestWork()
 {
+//	if (isShuttingDown) return NULL;
 	Job * ret;
 	// get lock for queue
-	if (jobs.empty() )
-	{
-		// wait for queue to have job
-	}
 	ret = jobs.front();
 	jobs.pop();
 

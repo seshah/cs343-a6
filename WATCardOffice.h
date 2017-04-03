@@ -47,6 +47,8 @@ _Task WATCardOffice
 	unsigned int numCouriers;
 	Courier **listOfCouriers;  // may need to use different way to store courriers
 	queue<Job *> jobs;
+//	bool isShuttingDown;
+//	_Event Shutdown {};
 
     void main();
   public:
