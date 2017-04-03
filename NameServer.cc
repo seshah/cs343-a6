@@ -36,13 +36,13 @@ void NameServer::main()
 		{
 			break NameServerLoop;
 		}
+		or _Accept(getMachineList)
+		{}
 		or _Accept(getMachine)
 		{
 			printer->print(Printer::Kind::NameServer, 'N', recentStudentIdRequest, getIndexStudent[recentStudentIdRequest]);
 			getIndexStudent[recentStudentIdRequest] = (getIndexStudent[recentStudentIdRequest] + 1) % numVendingMachines;
 		}
-		or _Accept(getMachineList)
-		{}
 	}
 	printer->print(Printer::Kind::NameServer, 'F');
 }

@@ -27,7 +27,6 @@ void BottlingPlant::runProduce()
 		totalProduced += produced[i];
 	}
 	printer->print(Printer::Kind::BottlingPlant, 'G', totalProduced);
-	yield(timeBetweenShipments);
 }
 
 void BottlingPlant::main()
@@ -49,11 +48,12 @@ void BottlingPlant::main()
 			break PlantProduction;
 		}
 		// Wait for the truck to pick up current shipment
-		_Accept(getShipment)
+		or _Accept(getShipment)
 		{
 			printer->print(Printer::Kind::BottlingPlant, 'P');
 			// Produce after truck has picked up shipment
 			runProduce();
+			yield(timeBetweenShipments);
 		}
 	}
 	printer->print(Printer::Kind::BottlingPlant, 'F');
