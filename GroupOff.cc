@@ -7,17 +7,15 @@ using namespace std;
 	
 void Groupoff::main()
 {
+
+	printer->print(Printer::Kind::Groupoff, 'S');
 	for(;numCards < numStudents;) _Accept(giftCard);
 
 	while ( numCards > 0 )
 	{
 		_Accept(~Groupoff)
 		{
-			vector< GiftCard *>::iterator it = cards.begin();
-			for( ; it != cards.end(); it++)
-			{
-				delete *it;
-			}
+			//printer->print(Printer::Kind::Groupoff, 'F');
 			break;
 		}
 		_Else
@@ -31,9 +29,12 @@ void Groupoff::main()
 			delete temp;
 			cards.erase( cards.begin()+studentCard );
 			numCards--;
+			printer->print(Printer::Kind::Groupoff, 'D', sodaCost);
 
 		}
 	}
+
+	printer->print(Printer::Kind::Groupoff, 'F');
 }
 
 
@@ -58,6 +59,14 @@ WATCard::FWATCard Groupoff::giftCard()
 	return gc->card;
 } // giftCard
 
+Groupoff::~Groupoff()
+{
+	vector< GiftCard *>::iterator it = cards.begin();
+	for( ; it != cards.end(); it++)
+	{
+		delete *it;
+	}
+}
 
 
 

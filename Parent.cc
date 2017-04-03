@@ -25,9 +25,13 @@ void Parent::main()
 
 	}
 
-	printer->print(Printer::Kind::Parent, 'F'); //Finished
 } // main
 
+
+Parent::~Parent()
+{
+	printer->print(Printer::Kind::Parent, 'F'); //Finished
+}
 
 
 Parent::Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay ) :
