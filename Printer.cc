@@ -44,9 +44,9 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
 		cout << "*******" << '\t';
 	for (unsigned int i = 0; i < numVendingMachines;i++)
 		cout << "*******" << '\t';
-	for (unsigned int i = 0; i < numCouriers;i++)
+	for (unsigned int i = 0; i < numCouriers - 1;i++)
 		cout << "*******" << '\t';
-	cout << endl;
+	cout << "*******" << endl;
 
 	resetBuffer();
 }
@@ -229,7 +229,8 @@ void Printer::flush()
 				cout << courier_Buffer[i];
 				break;
 		}
-		cout << '\t';
+		if (i != numCouriers - 1)
+			cout << '\t';
 	}
 
 	cout << endl;
@@ -269,7 +270,8 @@ void Printer::finishFlush(Kind kind, unsigned int lid)
 			cout << 'F';
 		else
 			cout << "...";
-		cout << '\t';
+		if (j != numCouriers - 1)
+			cout << '\t';
 	}
 	cout << endl;
 }
