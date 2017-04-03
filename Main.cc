@@ -84,8 +84,8 @@ void uMain::main()
 	{
 		delete students[i];
 	}
-	delete[] bottlingPlant;
-	delete[] nameServer;
+	delete bottlingPlant;
+	delete nameServer;
 	for (unsigned int i = 0;i < configuration.numVendingMachines;i++)
 	{
 		delete vendingMachines[i];
@@ -94,9 +94,4 @@ void uMain::main()
 	delete watCardOffice;
 	delete parent;
 	delete bank;
-
-
-
-
-
 }
