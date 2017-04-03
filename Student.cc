@@ -5,6 +5,9 @@
 #include "GroupOff.h"
 #include "VendingMachine.h"
 #include "RandomGenerator.h" // RandomGenerator
+#include <iostream>
+
+using namespace std;
 
 Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, Groupoff &groupoff,
              unsigned int id, unsigned int maxPurchases ):
@@ -70,25 +73,41 @@ void Student::main()
 
 		BuyAttempts: while (true)
 		{
-			try
+			_Enable
 			{
-				// Attempting to buy the chosen soda
-				_Enable
+				try
 				{
+					// Attempting to buy the chosen soda
+					cerr << "Student" << id << " at " << &uThisTask() << endl;
 					vendingMachine->buy(flavourToBuy, *(cardToUse));
+					yield(); // In case an exception is thrown
 					break BuyAttempts;
 				}
-			}
-			catch(VendingMachine::Stock)
-			{
-				// Chosen soda was out of stock, so look for another machine
-				vendingMachine = nameServer->getMachine(id);
-				printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
-			}
-			catch(VendingMachine::Funds)
-			{
-				// Assumption: gift card should always be one soda and done
-				cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
+				_CatchResume(VendingMachine::Stock)
+				{
+					// Chosen soda was out of stock, so look for another machine
+					cerr << "CAUGHT STOCK" << endl;
+					vendingMachine = nameServer->getMachine(id);
+					printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
+					throw BuyRetry();
+				}
+				_CatchResume(VendingMachine::Funds)
+				{
+					cerr << "CAUGHT FUNDS" << endl;
+					// Assumption: gift card should always be one soda and done
+					cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
+					throw BuyRetry();
+				}
+				catch (BuyRetry)
+				{
+					cout << "RETRYING BUY" << endl;
+					/* NOTES:
+					 * - catch is not catching Stock or Funds, so resorting to throwing a new event on _CatchResume
+					 * - don't want resumption because resumption will exit and continue the loop
+					 * CONCLUSION:
+					 * - not the best looking solution, but above points is not what is desired
+					 */
+				}
 			}
 		}
 

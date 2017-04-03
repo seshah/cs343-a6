@@ -40,9 +40,13 @@ void VendingMachine::main()
 		or _When(!isRestocking) _Accept(buy)
 		{
 			if (buyOutOfFunds)
+			{
 				_Resume Funds() _At *lastBuyer;
+			}
 			if (buyOutOfStock)
+			{
 				_Resume Stock() _At *lastBuyer;
+			}
 			else
 			{
 				stockPerFlavour[mostRecentlyBoughtFlavour]--;

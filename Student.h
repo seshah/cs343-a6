@@ -10,7 +10,6 @@ class RandomGenerator;
 
 _Task Student
 {
-
 	Printer *printer;
 	NameServer *nameServer;
 	WATCardOffice *cardOffice;
@@ -18,6 +17,7 @@ _Task Student
 	const unsigned int id;
 	const unsigned int maxPurchases;
 
+	_Event BuyRetry{};
 	RandomGenerator *random;
 
     void main();
