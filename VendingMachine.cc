@@ -25,7 +25,7 @@ void VendingMachine::main()
 	{
 		// Only allow deconstruction when its not restocking, since the stock array is given to restocker for direct manipulation
 		_When(!isRestocking) _Accept(~VendingMachine)
-		{}
+		{break;}
 		or _Accept(inventory)
 		{
 			printer->print(Printer::Kind::Vending, id, 'r');
@@ -58,6 +58,7 @@ void VendingMachine::main()
 			buyOutOfStock = false;
 		}
 	}
+	printer->print(Printer::Kind::Vending,id,'F');
 }
 
 void VendingMachine::buy( Flavours flavour, WATCard &card )

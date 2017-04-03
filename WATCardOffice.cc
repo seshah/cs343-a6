@@ -45,8 +45,8 @@ void WATCardOffice::main()
 	while(true)
 	{
 		// only allow destructor when queue is empty. i.e no jobs left to do
-		_When(jobs.empty()) _Accept(~WATCardOffice)
-		{}
+		_Accept(~WATCardOffice)
+		{break;}
 		or _Accept(create)
 		{}
 		or _Accept(transfer)
@@ -75,6 +75,12 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
 // delete couriers before ending
 WATCardOffice::~WATCardOffice()
 {
+	while(!jobs.empty())
+	{
+		Job * temp = jobs.front();
+		jobs.pop();
+		delete temp;
+	}
 	for(unsigned int i = 0; i < numCouriers; i++) delete listOfCouriers[i];
 	delete [] listOfCouriers;
 } // ~WATCardOffice

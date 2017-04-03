@@ -92,7 +92,7 @@ void Student::main()
 			_CatchResume(VendingMachine::Funds)	
 			{
 				// Assumption: gift card should always be one soda and done
-				cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
+				watCard = cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
 				throw BuyRetry();
 			}		
 			catch (BuyRetry)
