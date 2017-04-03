@@ -19,7 +19,7 @@ void Parent::main()
 			unsigned int student = random->generator(0, numStudents);
 			unsigned int amount = random->generator(1,3); 
 			yield(parentalDelay);
-			printer->print(Printer::Kind::Parent, student, 'D', amount); // deposit gift
+			printer->print(Printer::Kind::Parent, 'D', student, amount); // deposit gift
 			bank->deposit(student, amount);
 		}
 

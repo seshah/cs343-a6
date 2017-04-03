@@ -183,7 +183,7 @@ void Printer::flush()
 				cout << student_Buffer[i] << student_Value1Buffer[i] << ',' << student_Value2Buffer[i];
 				break;
 			case 'V':
-				cout << student_Buffer[i] << student_Buffer[i];
+				cout << student_Buffer[i] << student_Value1Buffer[i];
 				break;
 			case 'L':
 			case 'F':

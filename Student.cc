@@ -68,24 +68,28 @@ void Student::main()
 		// Determining whether to buy favourite flavour or the new one
 		VendingMachine::Flavours flavourToBuy = (random->generator(1,4) == 1) ? VendingMachine::Flavours::DrSalt : static_cast<VendingMachine::Flavours>(favouriteFlavour);
 
-		try
+		BuyAttempts: while (true)
 		{
-			// Attempting to buy the chosen soda
-			_Enable
+			try
 			{
-				vendingMachine->buy(flavourToBuy, *(cardToUse));
+				// Attempting to buy the chosen soda
+				_Enable
+				{
+					vendingMachine->buy(flavourToBuy, *(cardToUse));
+					break BuyAttempts;
+				}
 			}
-		}
-		_CatchResume(VendingMachine::Stock)
-		{
-			// Chosen soda was out of stock, so look for another machine
-			vendingMachine = nameServer->getMachine(id);
-			printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
-		}
-		_CatchResume(VendingMachine::Funds)
-		{
-			// Assumption: gift card should always be one soda and done
-			cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
+			catch(VendingMachine::Stock)
+			{
+				// Chosen soda was out of stock, so look for another machine
+				vendingMachine = nameServer->getMachine(id);
+				printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
+			}
+			catch(VendingMachine::Funds)
+			{
+				// Assumption: gift card should always be one soda and done
+				cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
+			}
 		}
 
 		if (giftCard.available() && cardToUse == giftCard)
