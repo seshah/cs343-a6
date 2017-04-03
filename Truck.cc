@@ -43,7 +43,7 @@ void Truck::main()
 				TruckDeliveryRoute: while (true)
 				{
 					unsigned int *machineInventory = vendingMachines[currentMachine]->inventory();
-					printer->print(Printer::Kind::Truck, currentMachine, 'P', totalSodasInCargo);
+					printer->print(Printer::Kind::Truck, 'P', currentMachine, totalSodasInCargo);
 
 					unsigned int machineMissingStock = VendingMachine::Flavours::NoOfFlavours * maxStockPerFlavour;
 
@@ -62,8 +62,8 @@ void Truck::main()
 
 					// Printing before restocked, in case of pre-emption after restocked
 					if (machineMissingStock > 0)
-						printer->print(Printer::Kind::Truck, currentMachine, 'U', machineMissingStock);
-					printer->print(Printer::Kind::Truck, currentMachine, 'D', totalSodasInCargo);
+						printer->print(Printer::Kind::Truck, 'U', currentMachine, machineMissingStock);
+					printer->print(Printer::Kind::Truck, 'D', currentMachine, totalSodasInCargo);
 
 					// Let vending machine know that truck is finished restocking it
 					vendingMachines[currentMachine]->restocked();
