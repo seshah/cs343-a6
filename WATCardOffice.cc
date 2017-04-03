@@ -4,12 +4,12 @@ using namespace std;
 
 void WATCardOffice::Courier::main()
 {
-	printer->print(Printer::Courier, id, 'S');
+	printer->print(Printer::Kind::Courier, id, 'S');
 	while(true)
 	{
 		int lost = random->generator(1, 6);
 		j = cardOffice->requestWork();
-		printer->print(Printer::Courier, id, 't', j->sid, j->amount);
+		printer->print(Printer::Kind::Courier, id, 't', j->sid, j->amount);
 		bank->withdraw(j->sid, j->amount);
 		if (lost == 3)
 		{
@@ -21,19 +21,19 @@ void WATCardOffice::Courier::main()
 		{
 			j->card->deposit(j->amount);
 			j->result.delivery(j->card);
-			printer->print(Printer::Courier, id, 'T', j->sid, j->amount);
+			printer->print(Printer::Kind::Courier, id, 'T', j->sid, j->amount);
 		}
 		// done with job, need to delete it
 		delete j;
 
 	}
-	printer->print(Printer::Courier, id, 'F');
+	printer->print(Printer::Kind::Courier, id, 'F');
 } // Courrier::main
 
 // 
 void WATCardOffice::main()
 {
-	printer->print(Printer::WATCardOffice, 'S');
+	printer->print(Printer::Kind::WATCardOffice, 'S');
 	for(unsigned int i = 0; i < numCouriers; i++) listOfCouriers[i] = new Courier(*printer, *this, *bank, i);
 	while(true)
 	{
@@ -50,11 +50,11 @@ void WATCardOffice::main()
 		}
 		or _When( !jobs.empty() )  _Accept(requestWork)
 		{
-			printer->print(Printer::WATCardOffice, 'W');
+			printer->print(Printer::Kind::WATCardOffice, 'W');
 		}
 	}
 
-	printer->print(Printer::WATCardOffice, 'F');
+	printer->print(Printer::Kind::WATCardOffice, 'F');
 
 } // WATCardOffice
 
@@ -82,7 +82,7 @@ WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount )
 	WATCard *card = new WATCard;
 	Job * newJob = new Job(sid, amount, card);
 	jobs.push(newJob);
-	printer->print(Printer::WATCardOffice, 'C', sid, amount);
+	printer->print(Printer::Kind::WATCardOffice, 'C', sid, amount);
 	return newJob->result;
 } // create
 
@@ -91,7 +91,7 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
 {
 	Job *newJob = new Job(sid, amount, card);
 	jobs.push(newJob);
-	printer->print(Printer::WATCardOffice,'T', sid,  amount);
+	printer->print(Printer::Kind::WATCardOffice,'T', sid,  amount);
 	return newJob->result;
 } // transfer
 	
