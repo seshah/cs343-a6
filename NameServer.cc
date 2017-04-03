@@ -3,17 +3,27 @@
 
 NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents ):
 						printer(&prt),numVendingMachines(numVendingMachines),numStudents(numStudents)
-{}
+{
+	vendingMachines = new VendingMachine*[numVendingMachines];
+	getIndexStudent = new unsigned int[numVendingMachines];
+	for (unsigned int i = 0;i < numStudents;i++)
+		getIndexStudent[i] = i % numVendingMachines;
+}
+
+NameServer::~NameServer()
+{
+	delete[] vendingMachines;
+	delete[] getIndexStudent;
+}
 
 void NameServer::main()
 {
 	printer->print(Printer::Kind::NameServer, 'S');
 
-	VendingMachines *vendingMachines[numVendingMachines];
+
 	// Setting up all the initial vending machines that each student will receive
 	unsigned int getIndexStudent[numStudents];
-	for (unsigned int i = 0;i < numStudents;i++)
-		getIndexStudent[i] = i % numVendingMachines;
+
 
 	// Allow all vending machines to register immediately before letting others do work
 	for (unsigned int i = 0;i < numVendingMachines;i++)

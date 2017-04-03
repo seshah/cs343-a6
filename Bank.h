@@ -1,23 +1,17 @@
 #ifndef _BANK_H_
 #define _BANK_H_
 
-
-
 _Monitor Bank
 {
-	unsigned int numStudents
+	unsigned int numStudents;
 	unsigned int *accounts;
 	uCondition *moneyWait;
 	unsigned int *moneyNeeded;
 	
   public:
-	~Bank() 
-	{ 
-		delete [] accounts;  // may not be needed if stack is used
-		delete [] moneyWait;
-		delete [] moneyNeeded;
-	}
     Bank( unsigned int numStudents );
+	~Bank();
+
     void deposit( unsigned int id, unsigned int amount );
     void withdraw( unsigned int id, unsigned int amount );
 };

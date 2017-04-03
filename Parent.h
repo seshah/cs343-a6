@@ -2,17 +2,19 @@
 #define _PARENT_H_
 
 
+#include "RandomGenerator.h"
 #include "Printer.h"
 #include "Bank.h"
 
 
-_Task Parent {
+_Task Parent
+{
 
+	Printer *printer;
+	Bank *bank;
 	const unsigned int numStudents;
 	const unsigned int parentalDelay;
-	Printer::Printer *printer;
-	Bank::Bank *bank;
-	RandomGenerator::RandomGenerator *random;
+	RandomGenerator *random;
 
     void main();
   public:

@@ -1,6 +1,8 @@
 #include "Printer.h"
 #include <iostream>
 
+using namespace std;
+
 #define STATE_UNDEFINED '~'
 
 Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers ):
@@ -211,7 +213,7 @@ void Printer::flush()
 	resetBuffer();
 }
 
-void Printer::finishFlush(Kind kind, unsigned int lid = 0)
+void Printer::finishFlush(Kind kind, unsigned int lid)
 {
 	for (int i = 0;i <= (int)Kind::BottlingPlant;i++)
 	{
@@ -237,7 +239,7 @@ void Printer::finishFlush(Kind kind, unsigned int lid = 0)
 			cout << "...";
 		cout << '\t';
 	}
-	for (unsigned int j = 0;j < numCourier;j++)
+	for (unsigned int j = 0;j < numCouriers;j++)
 	{
 		if (Kind::Courier == (int)kind && j == lid)
 			cout << 'F';
@@ -248,7 +250,7 @@ void Printer::finishFlush(Kind kind, unsigned int lid = 0)
 	cout << endl;
 }
 
-void Printer::storeSingleKind(Kind kind, char state, int value1 = 0, int value2 = 0)
+void Printer::storeSingleKind(Kind kind, char state, int value1, int value2)
 {
 	// TODO: Should never occur, but just safeguarding this
 	if ((int)kind >= (int)Kind::Student)
@@ -258,7 +260,7 @@ void Printer::storeSingleKind(Kind kind, char state, int value1 = 0, int value2 
 	if (state == 'F')
 	{
 		flush();
-		finishFlush(state, lid);
+		finishFlush(kind);
 		return;
 	}
 
@@ -270,7 +272,7 @@ void Printer::storeSingleKind(Kind kind, char state, int value1 = 0, int value2 
 	single_Value2Buffer[(int)kind] = value2;
 }
 
-void Printer::storeMultiKind(Kind kind, unsigned int lid, char state, int value1 = 0, int value2 = 0)
+void Printer::storeMultiKind(Kind kind, unsigned int lid, char state, int value1, int value2)
 {
 	// TODO: Should never occur, but just safeguarding this
 	if ((int)kind <= (int)Kind::BottlingPlant)
@@ -280,7 +282,7 @@ void Printer::storeMultiKind(Kind kind, unsigned int lid, char state, int value1
 	if (state == 'F')
 	{
 		flush();
-		finishFlush(state, lid);
+		finishFlush(kind, lid);
 		return;
 	}
 
@@ -307,6 +309,8 @@ void Printer::storeMultiKind(Kind kind, unsigned int lid, char state, int value1
 			courier_Value1Buffer[lid] = value1;
 			courier_Value2Buffer[lid] = value2;
 			break;
+		default:
+			break;
 	}
 }
 
@@ -325,17 +329,17 @@ void Printer::print(Kind kind, char state, int value1, int value2)
 	storeSingleKind(kind, state, value1, value2);
 }
 
-void print(Kind kind, unsigned int lid, char state)
+void Printer::print(Kind kind, unsigned int lid, char state)
 {
 	storeMultiKind(kind, lid, state);
 }
 
-void print(Kind kind, unsigned int lid, char state, int value1)
+void Printer::print(Kind kind, unsigned int lid, char state, int value1)
 {
 	storeMultiKind(kind, lid, state, value1);
 }
 
-void print(Kind kind, unsigned int lid, char state, int value1, int value2)
+void Printer::print(Kind kind, unsigned int lid, char state, int value1, int value2)
 {
 	storeMultiKind(kind, lid, state, value1, value2);
 }

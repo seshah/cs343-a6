@@ -1,5 +1,6 @@
 #include "VendingMachine.h"
 #include "NameServer.h"
+#include "WATCard.h"
 
 
 VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
@@ -7,7 +8,7 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
 					printer(&prt),nameServer(&nameServer),id(id),sodaCost(sodaCost),
 					maxStockPerFlavour(maxStockPerFlavour)
 {
-	for (unsigned int i = 0;i < Flavours::NoOfFlavour;i++)
+	for (unsigned int i = 0;i < Flavours::NoOfFlavours;i++)
 		stockPerFlavour[i] = 0;
 	buyOutOfFunds = false;
 	buyOutOfStock = false;
@@ -15,7 +16,7 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
 
 void VendingMachine::main()
 {
-	printer->printer(Printer::Kind::Vending, id, 'S', sodaCost);
+	printer->print(Printer::Kind::Vending, id, 'S', sodaCost);
 
 	nameServer->VMregister(this);
 
@@ -27,12 +28,12 @@ void VendingMachine::main()
 		{}
 		or _Accept(inventory)
 		{
-			printer->printer(Printer::Kind::Vending, id, 'r');
+			printer->print(Printer::Kind::Vending, id, 'r');
 			isRestocking = true;
 		}
 		or _When(isRestocking) _Accept(restocked)
 		{
-			printer->printer(Printer::Kind::Vending, id, 'R');
+			printer->print(Printer::Kind::Vending, id, 'R');
 			isRestocking = false;
 		}
 		// Cannot allow people to buy while machine is restocking
@@ -45,7 +46,7 @@ void VendingMachine::main()
 			else
 			{
 				stockPerFlavour[mostRecentlyBoughtFlavour]--;
-				printer->printer(Printer::Kind::Vending, id, 'B', mostRecentlyBoughtFlavour);
+				printer->print(Printer::Kind::Vending, id, 'B', mostRecentlyBoughtFlavour);
 			}
 
 			// Reset the flags for next usage

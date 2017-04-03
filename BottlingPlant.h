@@ -2,6 +2,7 @@
 #define __BOTTLINGPLANT_H__
 
 #include "Printer.h"
+#include "RandomGenerator.h"
 #include "VendingMachine.h" // VendingMachine::Flavours::NoOfFlavours
 
 // Forward Declarations
@@ -10,15 +11,16 @@ _Task Truck;
 
 _Task BottlingPlant
 {
+	Printer *printer;
+	NameServer *nameServer;
 	const unsigned int numVendingMachines;
 	const unsigned int maxShippedPerFlavour;
 	const unsigned int maxStockPerFlavour;
 	const unsigned int timeBetweenShipments;
+
 	bool isShuttingDown = false;
 
 	unsigned int produced[VendingMachine::Flavours::NoOfFlavours];
-	Printer *printer;
-	NameServer *nameServer;
 	RandomGenerator *random;
 
 	void runProduce(); // The production run for the bottling plant

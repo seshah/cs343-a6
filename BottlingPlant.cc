@@ -10,7 +10,7 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
 				 maxShippedPerFlavour(maxShippedPerFlavour),maxStockPerFlavour(maxStockPerFlavour),
 				 timeBetweenShipments(timeBetweenShipments)
 {
-	random = RandomGenerator::getInstance();
+	random = &RandomGenerator::getInstance();
 	for (unsigned int i = 0;i < VendingMachine::Flavours::NoOfFlavours;i++)
 	{
 		produced[i] = 0;
@@ -34,7 +34,7 @@ void BottlingPlant::main()
 {
 	printer->print(Printer::Kind::BottlingPlant, 'S');
 
-	Truck truck(*printer, *nameServer, this, numVendingMachines, maxStockPerFlavour);
+	Truck truck(*printer, *nameServer, *this, numVendingMachines, maxStockPerFlavour);
 	// Priming to ensure that there is a production to start with
 	runProduce();
 	PlantProduction: while (true)
@@ -44,7 +44,7 @@ void BottlingPlant::main()
 			isShuttingDown = true;
 
 			// Tell truck of the shutdown and make sure they receive it.
-			_Resume Shutdown() at truck;
+			_Resume Shutdown() _At truck;
 
 			break PlantProduction;
 		}

@@ -10,12 +10,14 @@ class RandomGenerator;
 
 _Task Student
 {
-	const unsigned int id;
 
 	Printer *printer;
 	NameServer *nameServer;
 	WATCardOffice *cardOffice;
 	Groupoff *groupoff;
+	const unsigned int id;
+	const unsigned int maxPurchases;
+
 	RandomGenerator *random;
 
     void main();

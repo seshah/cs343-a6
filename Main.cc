@@ -5,8 +5,10 @@
 #include "GroupOff.h"
 #include "Parent.h"
 #include "Bank.h"
+#include "BottlingPlant.h"
 #include "WATCardOffice.h"
 #include <string>
+#include <sstream>
 #include <iostream>
 
 using namespace std;
@@ -27,15 +29,19 @@ void uMain::main()
 	switch (argc)
 	{
 		case 3:
+		{
 			stringstream ss(argv[2]);
 			if (!(ss >> seed))
 				usageError(argv[0]);
-		case 2;
+		}
+		case 2:
 			configFile = argv[1];
+		default:
+			break;
 	}
 
 	// Setting up command line parameter related values
-	rngSingleton* rng = &rngSingleton::getInstance();
+	RandomGenerator *rng = &RandomGenerator::getInstance();
 	rng->generator.set_seed(seed);
 	ConfigParms configuration;
 	processConfigFile(configFile.c_str(), configuration);
@@ -48,7 +54,7 @@ void uMain::main()
 	/* Setting up the entire soda process
 	 * NOTE: Using pointers because order of deletion is different than initialization
 	 */
-	Printer printer(configuration.numStudents, configuration.numVendingMachines, numCouriers);
+	Printer printer(configuration.numStudents, configuration.numVendingMachines, configuration.numCouriers);
 
 	// Production-related setup
 	NameServer *nameServer = new NameServer(printer, configuration.numVendingMachines, configuration.numStudents);
@@ -68,18 +74,18 @@ void uMain::main()
 
 	// Consumption-related setup
 	Student *students[configuration.numStudents];
-	for (unsigned int i = 0;i < configuration.numStudents,i++)
+	for (unsigned int i = 0;i < configuration.numStudents;i++)
 	{
-		students[i] = new Student(printer, *nameServer, *watCardOffice, *groupOff, i, configuration.maxPurchases);
+		students[i] = new Student(printer, *nameServer, *watCardOffice, *groupoff, i, configuration.maxPurchases);
 	}
 
 	// Waiting for soda process to end
-	for (unsigned int i = 0;i < configuration.numStudents,i++)
+	for (unsigned int i = 0;i < configuration.numStudents;i++)
 	{
 		delete students[i];
 	}
-	delete BottlingPlant;
-	delete NameServer;
+	delete[] bottlingPlant;
+	delete[] nameServer;
 	for (unsigned int i = 0;i < configuration.numVendingMachines;i++)
 	{
 		delete vendingMachines[i];

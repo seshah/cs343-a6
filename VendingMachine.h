@@ -5,6 +5,7 @@
 
 // Forward declarations
 _Task NameServer;
+class WATCard;
 
 _Task VendingMachine
 {
@@ -31,16 +32,17 @@ _Task VendingMachine
     _Nomutex unsigned int cost();
     _Nomutex unsigned int getId();
   private:
+	Printer *printer;
+	NameServer *nameServer;
 	const unsigned int id;
 	const unsigned int sodaCost;
 	const unsigned int maxStockPerFlavour;
+
 	unsigned int stockPerFlavour[Flavours::NoOfFlavours];
     unsigned int mostRecentlyBoughtFlavour;
     bool buyOutOfFunds, buyOutOfStock;
     uBaseTask *lastBuyer;
 
-	Printer *printer;
-	NameServer *nameServer;
 
     void main();
 };

@@ -9,13 +9,13 @@ _Task BottlingPlant;
 
 _Task Truck
 {
-	const unsigned int numVendingMachines;
-	const unsigned int maxStockPerFlavour;
-	unsigned int cargo[VendingMachine::Flavours::NoOfFlavours];
-
 	Printer *printer;
 	NameServer *nameServer;
 	BottlingPlant *bottlingPlant;
+	const unsigned int numVendingMachines;
+	const unsigned int maxStockPerFlavour;
+
+	unsigned int cargo[VendingMachine::Flavours::NoOfFlavours];
 
     void main();
   public:

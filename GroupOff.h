@@ -2,21 +2,26 @@
 #define _GROUPOFF_H_
 
 #include "Printer.h"
-#include "RamdomGenerator.h"
+#include "WATCard.h"
+#include "RandomGenerator.h"
+#include <vector>
 
-_Task Groupoff {
+using namespace std;
+
+_Task Groupoff
+{
 	Printer *printer;
 	unsigned int numStudents;
 	unsigned int sodaCost;
 	unsigned int groupOffDelay;
-	RandomGenerator *random
-	int numCards;
+	RandomGenerator *random;
+	unsigned int numCards;
 	struct GiftCard 
 	{
 		WATCard::FWATCard card;
-		GiftCards() {};
-	}
-	vector< GiftCards * > cards;
+		GiftCard() {};
+	};
+	vector<GiftCard*> cards;
 	
     void main();
   public:

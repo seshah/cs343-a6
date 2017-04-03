@@ -6,7 +6,7 @@
 
 Truck::Truck(Printer &prt, NameServer &nameServer, BottlingPlant &plant,
 				unsigned int numVendingMachines, unsigned int maxStockPerFlavour ):
-				printer(&prt),nameServer(&nameServer),bottingPlant(&plant),
+				printer(&prt),nameServer(&nameServer),bottlingPlant(&plant),
 				numVendingMachines(numVendingMachines),maxStockPerFlavour(maxStockPerFlavour)
 {}
 
@@ -14,7 +14,7 @@ void Truck::main()
 {
 	printer->print(Printer::Kind::Truck, 'S');
 	VendingMachine **vendingMachines = nameServer->getMachineList();
-	RandomGenerator *random = RandomGenerator::getInstance();
+	RandomGenerator *random = &RandomGenerator::getInstance();
 	try
 	{
 		unsigned int currentMachine = 0;

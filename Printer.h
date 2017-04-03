@@ -29,10 +29,6 @@ _Monitor Printer
 
 	void resetBuffer();
 	void flush();
-	void finishFlush();
-	// Used to converge the multiple print functions into a single function
-	void storeSingleKind(Kind kind, char state, int value1 = 0, int value2 = 0);
-	void storeMultiKind(Kind kind, unsigned int lid, char state, int value1 = 0, int value2 = 0);
   public:
     enum Kind { Parent, Groupoff, WATCardOffice, NameServer, Truck, BottlingPlant, Student, Vending, Courier };
     Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers );
@@ -43,6 +39,11 @@ _Monitor Printer
     void print( Kind kind, unsigned int lid, char state );
     void print( Kind kind, unsigned int lid, char state, int value1 );
     void print( Kind kind, unsigned int lid, char state, int value1, int value2 );
+  private:
+    // Used to converge the multiple print functions into a single function
+	void storeSingleKind(Kind kind, char state, int value1 = 0, int value2 = 0);
+	void storeMultiKind(Kind kind, unsigned int lid, char state, int value1 = 0, int value2 = 0);
+	void finishFlush(Kind kind, unsigned int lid = 0);
 };
 
 #endif

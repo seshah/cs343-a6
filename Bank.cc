@@ -10,7 +10,7 @@ Bank::Bank( unsigned int numStudents ) :
 	moneyNeeded = new unsigned int[numStudents];
 	moneyWait = new uCondition[numStudents];
 
-	for (int i = 0; i < numStudents; i++) 
+	for (unsigned int i = 0; i < numStudents; i++)
 	{
 		accounts[i] = 0;  // assert each account starts with 0. probably unnecessary
 		moneyNeeded[i] = 0;
@@ -18,14 +18,19 @@ Bank::Bank( unsigned int numStudents ) :
 
 } // Bank
 
-
+Bank::~Bank()
+{
+	delete [] accounts;  // may not be needed if stack is used
+	delete [] moneyWait;
+	delete [] moneyNeeded;
+}
 
 void Bank::deposit( unsigned int id, unsigned int amount ) 
 {
 	accounts[id] = accounts[id] + amount;
 	// Let the waiting withdrawer know that there is enough money now
 	if (moneyNeeded[id] != 0 && accounts[id] >= moneyNeeded[id])
-		moneyWait.signal();
+		moneyWait[id].signal();
 } //deposit
 
 
@@ -36,7 +41,7 @@ void Bank::withdraw( unsigned int id, unsigned int amount )
 	if (accounts[id] < amount)
 	{
 		moneyNeeded[id] = amount;
-		moneyWait.wait();
+		moneyWait[id].wait();
 		moneyNeeded[id] = 0;
 	} // if
 

@@ -8,32 +8,40 @@
 #include "RandomGenerator.h"
 #include <queue>
 
-_Task WATCardOffice {
-	
-	Printer *printer;
-	Bank *bank;
-	unsigned int numCouriers;
-	Courier *listOfCouriers;  // may need to use different way to store courriers
-	queue<Job *> jobs;
+using namespace std;
+
+_Task WATCardOffice
+{
     struct Job
     {                              // marshalled arguments and return future
         unsigned int sid;                       // call arguments (YOU DEFINE "Args")
-	WATCard *card;
-	unsigned int amount;
+		unsigned int amount;
+		WATCard *card;
         WATCard::FWATCard result;             // return future
         Job( unsigned int sid, unsigned int amount, WATCard *card) :
-		sid(sid),
-		amount(amount),
-		card(card) {}
+				sid(sid),
+				amount(amount),
+				card(card)
+        {}
     };
     _Task Courier 
 	{ 
+    	Printer* printer;
+    	WATCardOffice* cardOffice;
+    	Bank* bank;
+
 		RandomGenerator *random;	
 		Job * j;
 		void main(); // call requestWork and block
-	    public:
-		Courier() { random = RandomGenerator::getInstance();}
-	}       
+	  public:
+		Courier(Printer &prt, WATCardOffice &cardOffice, Bank &bank):printer(&prt),cardOffice(&cardOffice),bank(&bank) { random = &RandomGenerator::getInstance();}
+	};
+
+	Printer *printer;
+	Bank *bank;
+	unsigned int numCouriers;
+	Courier **listOfCouriers;  // may need to use different way to store courriers
+	queue<Job *> jobs;
 
     void main();
   public:

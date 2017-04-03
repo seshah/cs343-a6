@@ -8,29 +8,31 @@
 
 Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, Groupoff &groupoff,
              unsigned int id, unsigned int maxPurchases ):
-			 printer(&prt),nameServer(nameServer),cardOffice(&cardOffice),groupoff(&groupoff),
-			 id(id)
+			 printer(&prt),nameServer(&nameServer),cardOffice(&cardOffice),groupoff(&groupoff),
+			 id(id),maxPurchases(maxPurchases)
 {
-	random = RandomGenerator::getInstance();
+	random = &RandomGenerator::getInstance();
 }
+
+Student::~Student()
+{}
 
 void Student::main()
 {
 	WATCard::FWATCard watCard = cardOffice->create(id, 5);
 	WATCard::FWATCard giftCard = groupoff->giftCard();
-	WATCard *pWATCard; // For destructing the last used WAT card given by the future
-
-	printer->print(Printer::Kind::Student, id, 'S', favouriteFlavour, numPurchases);
+	WATCard *pWATCard = NULL; // For destructing the last used WAT card given by the future
 
 	const unsigned int numPurchases = random->generator(1,maxPurchases);
 	const unsigned int favouriteFlavour = random->generator(0, ((unsigned int)VendingMachine::Flavours::NoOfFlavours) - 2);
 
+	printer->print(Printer::Kind::Student, id, 'S', favouriteFlavour, numPurchases);
 
 	VendingMachine *vendingMachine = nameServer->getMachine(id);
 
 	printer->print(Printer::Kind::Student, id, 'V', vendingMachine->getId());
 
-	for (unsigned int i = 0;i < numPurchase;i++)
+	for (unsigned int i = 0;i < numPurchases;i++)
 	{
 		yield(random->generator(1,10));
 
@@ -38,11 +40,11 @@ void Student::main()
 		WATCard *cardToUse;
 		CardWait: while (true)
 		{
-			_Select(watCard.available())
+			_Select(watCard)
 			{
 				try
 				{
-					_Activate
+					_Enable
 					{
 						pWATCard = watCard();
 						cardToUse = pWATCard;
@@ -56,7 +58,7 @@ void Student::main()
 					watCard = cardOffice->create(id, 5);
 				}
 			}
-			or _Select(giftCard.available())
+			or _Select(giftCard)
 			{
 				cardToUse = giftCard();
 				break CardWait;
@@ -69,7 +71,7 @@ void Student::main()
 		try
 		{
 			// Attempting to buy the chosen soda
-			_Activate
+			_Enable
 			{
 				vendingMachine->buy(flavourToBuy, *(cardToUse));
 			}
@@ -83,7 +85,7 @@ void Student::main()
 		_CatchResume(VendingMachine::Funds)
 		{
 			// Assumption: gift card should always be one soda and done
-			cardOffice->transfer(id, vendingMachine->cost(), cardToUse)
+			cardOffice->transfer(id, vendingMachine->cost(), cardToUse);
 		}
 
 		if (giftCard.available() && cardToUse == giftCard)
@@ -104,5 +106,4 @@ void Student::main()
 		delete watCard;
 
 	printer->print(Printer::Kind::Student, id, 'F');
-
 }

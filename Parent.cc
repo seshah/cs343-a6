@@ -6,8 +6,7 @@ using namespace std;
 
 void Parent::main()
 {
-
-	printer->print(Printer::Kind::Parent, 'S') //Starting
+	printer->print(Printer::Kind::Parent, 'S'); //Starting
 	Deposit: while(true) 
 	{
 	
@@ -26,7 +25,7 @@ void Parent::main()
 
 	}
 
-	printer->print(Printer::Kind::Parent, 'F') //Finished
+	printer->print(Printer::Kind::Parent, 'F'); //Finished
 } // main
 
 
@@ -37,7 +36,7 @@ Parent::Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int
 	numStudents(numStudents),
 	parentalDelay(parentalDelay)
 {
-	random = RandomGenerator::getInstance();
+	random = &RandomGenerator::getInstance();
 }  // Parent
 
 

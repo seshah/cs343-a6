@@ -1,60 +1,62 @@
 #include "GroupOff.h"
+#include <vector>
 
 using namespace std;
 
 
 	
-    void main() 
-	{
-		for(; numCards < numStudents; ) _Accept(giftCard);
+void Groupoff::main()
+{
+	for(;numCards < numStudents;) _Accept(giftCard);
 
-		while ( numCards > 0 ) 
+	while ( numCards > 0 )
+	{
+		_Accept(~Groupoff)
 		{
-			_Accept(~Groupoff) 
+			vector< GiftCard *>::iterator it = cards.begin();
+			for( ; it != cards.end(); it++)
 			{
-				vect< GiftCard *>::iterator it = cards.begin();
-				for( ; it != vards.end(); it++) 
-				{
-					delete *it;
-				} 
-				break;
+				delete *it;
 			}
-			_Else
-			{
-				WATCard * watCard = new WATCard(sodaCost);
-				int studentCard = random->generator(0, numCards-1);
-				yield(GroupoffDelay);
-				GiftCard * temp = cards[studentCard];
-				temp->card.delivery(watCard);
-				delete temp;
-				cards.erase( cards.begin()+studentCard );
-				numCards--;
-				
-			}
+			break;
+		}
+		_Else
+		{
+			WATCard * watCard = new WATCard();
+			watCard->deposit(sodaCost);
+			int studentCard = random->generator(0, numCards-1);
+			yield(groupOffDelay);
+			GiftCard * temp = cards[studentCard];
+			temp->card.delivery(watCard);
+			delete temp;
+			cards.erase( cards.begin()+studentCard );
+			numCards--;
+
 		}
 	}
+}
 
 
 // intitialise GroupOff
-    Groupoff( Printer &prt, unsigned int numStudents, unsigned int sodaCost, unsigned int groupoffDelay ) :
+Groupoff::Groupoff( Printer &prt, unsigned int numStudents, unsigned int sodaCost, unsigned int groupoffDelay ) :
 	printer(&prt),
 	numStudents(numStudents),
 	sodaCost(sodaCost),
-	goroupoffDelay(groupoffDelay),
+	groupOffDelay(groupoffDelay),
 	numCards(0)
-	{
-		random = RandomGenerator::getInstance();
-	} // Groupoff
+{
+	random = &RandomGenerator::getInstance();
+} // Groupoff
 
 
 // return a groupoff future to student
-    WATCard::FWATCard giftCard()
-	{
-		GiftCard * gc = new GiftCard();
-		card.push_back(gc);
-		numCards++;
-		return gc->card;
-	} // giftCard
+WATCard::FWATCard Groupoff::giftCard()
+{
+	GiftCard * gc = new GiftCard();
+	cards.push_back(gc);
+	numCards++;
+	return gc->card;
+} // giftCard
 
 
 
