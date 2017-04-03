@@ -24,6 +24,30 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
 	courier_Value1Buffer = new int[numCouriers];
 	courier_Value2Buffer = new int[numCouriers];
 
+	// Printing the header
+	cout << "Parent" << '\t';
+	cout << "Gropoff" << '\t';
+	cout << "WATOff" << '\t';
+	cout << "Names" << '\t';
+	cout << "Truck" << '\t';
+	cout << "Plant" << '\t';
+	for (unsigned int i = 0;i < numStudents;i++)
+		cout << "Stud" << i << '\t';
+	for (unsigned int i = 0;i < numVendingMachines;i++)
+		cout << "Mach" << i << '\t';
+	for (unsigned int i = 0;i < numCouriers;i++)
+		cout << "Cour" << i << '\t';
+	cout << endl;
+	for (unsigned int i = 0; i < Kind::Student;i++)
+		cout << "*******" << '\t';
+	for (unsigned int i = 0; i < numStudents;i++)
+		cout << "*******" << '\t';
+	for (unsigned int i = 0; i < numVendingMachines;i++)
+		cout << "*******" << '\t';
+	for (unsigned int i = 0; i < numCouriers;i++)
+		cout << "*******" << '\t';
+	cout << endl;
+
 	resetBuffer();
 }
 
@@ -156,7 +180,7 @@ void Printer::flush()
 			case 'S':
 			case 'G':
 			case 'B':
-				cout << student_Buffer[i] << student_Buffer[i] << ',' << student_Buffer[i];
+				cout << student_Buffer[i] << student_Value1Buffer[i] << ',' << student_Value2Buffer[i];
 				break;
 			case 'V':
 				cout << student_Buffer[i] << student_Buffer[i];
@@ -175,10 +199,10 @@ void Printer::flush()
 		{
 			case 'G':
 			case 'B':
-				cout << vending_Buffer[i] << vending_Buffer[i] << ',' << vending_Buffer[i];
+				cout << vending_Buffer[i] << vending_Value1Buffer[i] << ',' << vending_Value2Buffer[i];
 				break;
 			case 'S':
-				cout << vending_Buffer[i] << vending_Buffer[i];
+				cout << vending_Buffer[i] << vending_Value1Buffer[i];
 				break;
 			case 'r':
 			case 'R':
@@ -195,10 +219,10 @@ void Printer::flush()
 		{
 			case 't':
 			case 'T':
-				cout << courier_Buffer[i] << courier_Buffer[i] << ',' << courier_Buffer[i];
+				cout << courier_Buffer[i] << courier_Value1Buffer[i] << ',' << courier_Value2Buffer[i];
 				break;
 			case 'L':
-				cout << courier_Buffer[i] << courier_Buffer[i];
+				cout << courier_Buffer[i] << courier_Value1Buffer[i];
 				break;
 			case 'S':
 			case 'F':
@@ -254,7 +278,10 @@ void Printer::storeSingleKind(Kind kind, char state, int value1, int value2)
 {
 	// TODO: Should never occur, but just safeguarding this
 	if ((int)kind >= (int)Kind::Student)
+	{
+		cerr << "FAILED: storeSingleKind(" << kind << ',' << state << ',' << value1 << ',' << value2 << ')' << endl;
 		_Throw InvalidOperation();
+	}
 
 	// Special scenario, where finishes are on its own special line
 	if (state == 'F')
@@ -276,7 +303,10 @@ void Printer::storeMultiKind(Kind kind, unsigned int lid, char state, int value1
 {
 	// TODO: Should never occur, but just safeguarding this
 	if ((int)kind <= (int)Kind::BottlingPlant)
+	{
+		cerr << "FAILED: storeMultiKind(" << kind << ',' << state << ',' << value1 << ',' << value2 << ')' << endl;
 		_Throw InvalidOperation();
+	}
 
 	// Special scenario, where finishes are on its own special line
 	if (state == 'F')

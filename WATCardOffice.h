@@ -29,12 +29,17 @@ _Task WATCardOffice
     	Printer* printer;
     	WATCardOffice* cardOffice;
     	Bank* bank;
+    	unsigned int id;
 
 		RandomGenerator *random;	
 		Job * j;
 		void main(); // call requestWork and block
 	  public:
-		Courier(Printer &prt, WATCardOffice &cardOffice, Bank &bank):printer(&prt),cardOffice(&cardOffice),bank(&bank) { random = &RandomGenerator::getInstance();}
+		Courier(Printer &prt, WATCardOffice &cardOffice, Bank &bank, unsigned int id):
+			printer(&prt),cardOffice(&cardOffice),bank(&bank),id(id)
+	  {
+			random = &RandomGenerator::getInstance();
+	  }
 	};
 
 	Printer *printer;

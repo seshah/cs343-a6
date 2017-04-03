@@ -4,16 +4,16 @@ using namespace std;
 
 void WATCardOffice::Courier::main()
 {
-	printer->print(Printer::Courier, 'S');
+	printer->print(Printer::Courier, id, 'S');
 	while(true)
 	{
 		int lost = random->generator(1, 6);
 		j = cardOffice->requestWork();
-		printer->print(Printer::Courier,j->sid, 't', j->amount);
+		printer->print(Printer::Courier, id, 't', j->sid, j->amount);
 		bank->withdraw(j->sid, j->amount);
 		if (lost == 3)
 		{
-			printer->print(Printer::Courier,j->sid, 'L');
+			printer->print(Printer::Courier, id, 'L', j->sid);
 			j->result.exception(new WATCardOffice::Lost);
 			delete j->card;
 		}
@@ -21,20 +21,20 @@ void WATCardOffice::Courier::main()
 		{
 			j->card->deposit(j->amount);
 			j->result.delivery(j->card);
-			printer->print(Printer::WATCardOffice, j->sid, 'T', j->amount);
+			printer->print(Printer::Courier, id, 'T', j->sid, j->amount);
 		}
 		// done with job, need to delete it
 		delete j;
 
 	}
-	printer->print(Printer::Courier, 'F');
+	printer->print(Printer::Courier, id, 'F');
 } // Courrier::main
 
 // 
 void WATCardOffice::main()
 {
 	printer->print(Printer::WATCardOffice, 'S');
-	for(unsigned int i = 0; i < numCouriers; i++) listOfCouriers[i] = new Courier(*printer, *this, *bank);
+	for(unsigned int i = 0; i < numCouriers; i++) listOfCouriers[i] = new Courier(*printer, *this, *bank, i);
 	while(true)
 	{
 		// only allow destructor when queue is empty. i.e no jobs left to do
@@ -82,7 +82,7 @@ WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount )
 	WATCard *card = new WATCard;
 	Job * newJob = new Job(sid, amount, card);
 	jobs.push(newJob);
-	printer->print(Printer::WATCardOffice, sid, 'C', amount);
+	printer->print(Printer::WATCardOffice, 'C', sid, amount);
 	return newJob->result;
 } // create
 
@@ -91,7 +91,7 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
 {
 	Job *newJob = new Job(sid, amount, card);
 	jobs.push(newJob);
-	printer->print(Printer::WATCardOffice, sid,'T',  amount);
+	printer->print(Printer::WATCardOffice,'T', sid,  amount);
 	return newJob->result;
 } // transfer
 	
