@@ -328,14 +328,14 @@ void Printer::storeMultiKind(Kind kind, unsigned int lid, char state, int value1
 			student_Value2Buffer[lid] = value2;
 			break;
 		case (Kind::Vending):
-			if (student_Buffer[lid] != STATE_UNDEFINED)
+			if (vending_Buffer[lid] != STATE_UNDEFINED)
 				flush();
 			vending_Buffer[lid] = state;
 			vending_Value1Buffer[lid] = value1;
 			vending_Value2Buffer[lid] = value2;
 			break;
 		case (Kind::Courier):
-			if (student_Buffer[lid] != STATE_UNDEFINED)
+			if (courier_Buffer[lid] != STATE_UNDEFINED)
 				flush();
 			courier_Buffer[lid] = state;
 			courier_Value1Buffer[lid] = value1;
