@@ -68,7 +68,7 @@ void Truck::main()
 					// Let vending machine know that truck is finished restocking it
 					vendingMachines[currentMachine]->restocked();
 
-					currentMachine++;
+					currentMachine = (currentMachine + 1) % numVendingMachines;
 					// If there is no cargo or we have restocked all machines, stop restocking cycle
 					if (totalSodasInCargo == 0 || startMachine == currentMachine)
 						break TruckDeliveryRoute;
