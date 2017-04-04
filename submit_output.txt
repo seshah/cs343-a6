@@ -1,0 +1,79 @@
+[509]% submit cs343 6 .
+ls: cannot access /u/cs343/handin/6: Permission denied
+"./Makefile" copied successfully.
+"./MPRNG.h" copied successfully.
+"./Bank.h" copied successfully.
+"./BottlingPlant.h" copied successfully.
+"./Config.h" copied successfully.
+"./GroupOff.h" copied successfully.
+"./MPRNG.h" copied successfully.
+"./NameServer.h" copied successfully.
+"./Parent.h" copied successfully.
+"./Printer.h" copied successfully.
+"./RandomGenerator.h" copied successfully.
+"./Student.h" copied successfully.
+"./Truck.h" copied successfully.
+"./VendingMachine.h" copied successfully.
+"./WATCard.h" copied successfully.
+"./WATCardOffice.h" copied successfully.
+"./Bank.cc" copied successfully.
+"./BottlingPlant.cc" copied successfully.
+"./Config.cc" copied successfully.
+"./GroupOff.cc" copied successfully.
+"./Main.cc" copied successfully.
+"./NameServer.cc" copied successfully.
+"./Parent.cc" copied successfully.
+"./Printer.cc" copied successfully.
+"./Student.cc" copied successfully.
+"./Truck.cc" copied successfully.
+"./VendingMachine.cc" copied successfully.
+"./WATCardOffice.cc" copied successfully.
+"./soda.testtxt" copied successfully.
+"./group.txt" copied successfully.
+
+In total, 30 files were copied successfully.
+
+Currently submitted files of blaltarejos (assignment 6):
+
+       Size     Time     Name
+-----------+------------+-----------
+       1112 Apr  3 23:32 Bank.cc
+        345 Apr  3 23:32 Bank.h
+       2155 Apr  3 23:32 BottlingPlant.cc
+       1065 Apr  3 23:32 BottlingPlant.h
+       3015 Apr  3 23:32 Config.cc
+       1054 Apr  3 23:32 Config.h
+       1543 Apr  3 23:32 GroupOff.cc
+        634 Apr  3 23:32 GroupOff.h
+        807 Apr  3 23:32 MPRNG.h
+       3137 Apr  3 23:32 Main.cc
+        860 Apr  3 23:32 Makefile
+       1706 Apr  3 23:32 NameServer.cc
+        680 Apr  3 23:32 NameServer.h
+        838 Apr  3 23:32 Parent.cc
+        399 Apr  3 23:32 Parent.h
+       9917 Apr  3 23:32 Printer.cc
+       1729 Apr  3 23:32 Printer.h
+        260 Apr  3 23:32 RandomGenerator.h
+       3286 Apr  3 23:32 Student.cc
+        646 Apr  3 23:32 Student.h
+       2999 Apr  3 23:32 Truck.cc
+        609 Apr  3 23:32 Truck.h
+       2247 Apr  3 23:32 VendingMachine.cc
+       1283 Apr  3 23:32 VendingMachine.h
+        848 Apr  3 23:32 WATCard.h
+       3581 Apr  3 23:32 WATCardOffice.cc
+       1712 Apr  3 23:32 WATCardOffice.h
+         16 Apr  3 23:32 group.txt
+      10989 Apr  3 23:32 soda.testtxt
+
+total files: 29
+
+
+Please check this against what you wanted to submit.
+
+**********************************************************************
+NOTE: You are responsible for submitting correctly and on time
+      You can check what you submitted with the -l option
+      If you have ANY doubts, please contact tutor BEFORE the due-date
+**********************************************************************
