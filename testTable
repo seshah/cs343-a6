@@ -1,0 +1,52 @@
+
+
+
+seed: 1234
+			Test1	Test2	Test3	Test4	Test5	 Test6	Test7	Test8	Test9
+SodaCost 		5	5	5	5	5
+NumStudents 		2	5	10	5	5
+MaxPurchases 		10	10	10	1	7
+NumVendingMachines 	3	3	3	3	3
+MaxStockPerFlavour 	10	10	10	10	10
+MaxShippedPerFlavour 	10	10	10	10	10
+TimeBetweenShipments 	5	5	5	5	5
+GroupoffDelay 		5	5	5	100	5
+ParentalDelay 		5	5	5	1	100
+NumCouriers 		1 	5	1	10	5
+
+
+Test1: default values given
+
+Test2: to see how well the couriers would distribute Jobs with an equal number of studebts
+	all jobs were almost evenly distributed between couriers
+	with a courier picking up a job almost as soon as one was
+	created.  No Watecard was lost in this test.  
+	Note: numStudents = numCouriers, however some students finished
+	early (S1, S4), meaning there were spare couriers to pick up
+	any outstanding job
+
+Test3: to see how well a single courier could deal with multiple students (10 in this case)
+	due to the large load of jobs, all the students ended up using their giftcard first
+	since the courrier was regularly interupted while trying to complete a job. The 
+	courier also lost a lot more WATCards (~9).  This is to be expected though since
+	the  number of lost WATCards increases with the number of jobs
+	the courier takes.  Since the total number of drinks students needed to drink
+	was 42, the courier had at least 32 jobs. One sixth of 32 is approximately 5,
+	meaning the courier would have bben expected to lose at least 5 WATCards, with a 
+	possibility of losing them again. therefore ~9 losses isn't a surprise.
+	Overall, the courier performed as expected.
+
+Test4: to test a case where no groupoff is used
+	due to the large delay, small number of students and the fact that each student only
+	needed to drink 1 soda, no student used the giftcard.  it simply took too long to
+	deliver the giftcards. Groupoff only delivered 2 out 5 gift cards before it's 
+	destructor was called.  Although it delivered the second giftcard after all the students 
+	had finished, the program still ended without a problem and it didn't take long to complete
+
+Test5 to test the affect of a long Parental delay on purchases
+	As expected, the program took longer than any other time to completeand printed almost 5500
+	lines.  since the parents only deposited between $[1,3] at a time and the soda cost was $5
+	the students were required to wait much longer for Parents to deposit enough funds to their
+	accounts.  Something to note about couriers: in this test, there was a case where Courier0 
+	lost a student's card and Courier4 took the job to transfer funds to the new card after the 
+	student requested a new card from WATCardOffice (by calling create).  
