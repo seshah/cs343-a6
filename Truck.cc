@@ -43,7 +43,7 @@ void Truck::main()
 				TruckDeliveryRoute: while (true)
 				{
 					unsigned int *machineInventory = vendingMachines[currentMachine]->inventory();
-					printer->print(Printer::Kind::Truck, 'P', currentMachine, totalSodasInCargo);
+					printer->print(Printer::Kind::Truck, 'd', currentMachine, totalSodasInCargo);
 
 					unsigned int machineMissingStock = VendingMachine::Flavours::NoOfFlavours * maxStockPerFlavour;
 
