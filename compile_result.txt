@@ -1,0 +1,36 @@
+********************************************************************************************************************************************************************************************************
+*** Test compilation for blaltare
+
+Files are:
+Bank.cc
+Bank.h
+BottlingPlant.cc
+BottlingPlant.h
+Config.cc
+Config.h
+GroupOff.cc
+GroupOff.h
+MPRNG.h
+Main.cc
+Makefile
+NameServer.cc
+NameServer.h
+Parent.cc
+Parent.h
+Printer.cc
+Printer.h
+RandomGenerator.h
+Student.cc
+Student.h
+Truck.cc
+Truck.h
+VendingMachine.cc
+VendingMachine.h
+WATCard.h
+WATCardOffice.cc
+WATCardOffice.h
+group.txt
+soda.testtxt
+
+**** Make successfully created executable "soda"
+**** End of files **************************************************************************************************************************************************************************************
