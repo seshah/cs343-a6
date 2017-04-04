@@ -44,6 +44,7 @@ _Monitor Printer
 	void storeSingleKind(Kind kind, char state, int value1 = 0, int value2 = 0);
 	void storeMultiKind(Kind kind, unsigned int lid, char state, int value1 = 0, int value2 = 0);
 	void finishFlush(Kind kind, unsigned int lid = 0);
+	void printTabs(char state, unsigned int &n);
 };
 
 #endif

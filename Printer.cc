@@ -87,9 +87,22 @@ void Printer::resetBuffer()
 		courier_Buffer[i] = STATE_UNDEFINED;
 }
 
+void Printer::printTabs(char state, unsigned int &n)
+{
+	if (state != STATE_UNDEFINED)
+	{
+		for (unsigned int i;i < n;i++)
+			cout << '\t';
+		n = 0;
+	}
+	n++;
+}
+
 void Printer::flush()
 {
+	unsigned int tabsMissed = 0;
 	// NOTE : Implemented the 'F' cases of each type, but 'F' should not pass through here!
+	printTabs(single_Buffer[Kind::Parent], tabsMissed);
 	switch (single_Buffer[Kind::Parent])			// Parent
 	{
 		case 'D':
@@ -100,8 +113,8 @@ void Printer::flush()
 			cout << single_Buffer[Kind::Parent];
 			break;
 	}
-	cout << '\t';
 
+	printTabs(single_Buffer[Kind::Groupoff], tabsMissed);
 	switch (single_Buffer[Kind::Groupoff])			// Groupoff
 	{
 		case 'D':
@@ -112,8 +125,8 @@ void Printer::flush()
 			cout << single_Buffer[Kind::Groupoff];
 			break;
 	}
-	cout << '\t';
 
+	printTabs(single_Buffer[Kind::WATCardOffice], tabsMissed);
 	switch (single_Buffer[Kind::WATCardOffice])		// WATCardOffice
 	{
 		case 'C':
@@ -126,8 +139,8 @@ void Printer::flush()
 			cout << single_Buffer[Kind::WATCardOffice];
 			break;
 	}
-	cout << '\t';
 
+	printTabs(single_Buffer[Kind::NameServer], tabsMissed);
 	switch (single_Buffer[Kind::NameServer])		// NameServer
 	{
 		case 'N':
@@ -141,8 +154,8 @@ void Printer::flush()
 			cout << single_Buffer[Kind::NameServer];
 			break;
 	}
-	cout << '\t';
 
+	printTabs(single_Buffer[Kind::Truck], tabsMissed);
 	switch (single_Buffer[Kind::Truck])				// Truck
 	{
 		case 'd':
@@ -158,8 +171,8 @@ void Printer::flush()
 			cout << single_Buffer[Kind::Truck];
 			break;
 	}
-	cout << '\t';
 
+	printTabs(single_Buffer[Kind::BottlingPlant], tabsMissed);
 	switch (single_Buffer[Kind::BottlingPlant])		// Bottling Plant
 	{
 		case 'G':
@@ -171,10 +184,10 @@ void Printer::flush()
 			cout << single_Buffer[Kind::BottlingPlant];
 			break;
 	}
-	cout << '\t';
 
 	for (unsigned int i = 0;i < numStudents;i++)	// Student
 	{
+		printTabs(student_Buffer[i], tabsMissed);
 		switch (student_Buffer[i])
 		{
 			case 'S':
@@ -190,11 +203,11 @@ void Printer::flush()
 				cout << student_Buffer[i];
 				break;
 		}
-		cout << '\t';
 	}
 
 	for (unsigned int i = 0;i < numVendingMachines;i++)	// Vending Machine
 	{
+		printTabs(vending_Buffer[i], tabsMissed);
 		switch (vending_Buffer[i])
 		{
 			case 'G':
@@ -210,11 +223,11 @@ void Printer::flush()
 				cout << vending_Buffer[i];
 				break;
 		}
-		cout << '\t';
 	}
 
 	for (unsigned int i = 0;i < numCouriers;i++)	// Courier
 	{
+		printTabs(courier_Buffer[i], tabsMissed);
 		switch (courier_Buffer[i])
 		{
 			case 't':
@@ -229,8 +242,6 @@ void Printer::flush()
 				cout << courier_Buffer[i];
 				break;
 		}
-		if (i != numCouriers - 1)
-			cout << '\t';
 	}
 
 	cout << endl;
