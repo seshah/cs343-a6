@@ -20,7 +20,7 @@ ${EXEC1} : ${OBJECTS1}				# link step 1st executable
 	
 #############################################################
 
-${OBJECTS} : ${MAKEFILE_NAME}
+${OBJECT} : ${MAKEFILE_NAME}
 
 -include ${DEPENDS}
 
