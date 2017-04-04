@@ -5,7 +5,9 @@ NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned 
 						printer(&prt),numVendingMachines(numVendingMachines),numStudents(numStudents)
 {
 	vendingMachines = new VendingMachine*[numVendingMachines];
-	getIndexStudent = new unsigned int[numVendingMachines];
+	getIndexStudent = new unsigned int[numStudents];
+	for (unsigned int i = 0;i < numStudents; i++)
+		getIndexStudent[i] = i % numVendingMachines;
 
 }
 
@@ -24,7 +26,6 @@ void NameServer::main()
 	{
 		_Accept(VMregister)
 		{
-			getIndexStudent[i] = i % numVendingMachines;
 			vendingMachines[i] = recentlyRegisteredVM;
 			printer->print(Printer::Kind::NameServer, 'R', i);
 		}
