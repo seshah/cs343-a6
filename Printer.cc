@@ -36,7 +36,11 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
 	for (unsigned int i = 0;i < numVendingMachines;i++)
 		cout << "Mach" << i << '\t';
 	for (unsigned int i = 0;i < numCouriers;i++)
-		cout << "Cour" << i << '\t';
+	{
+		cout << "Cour" << i;
+		if (i != numCouriers - 1)
+			cout << '\t';
+	}
 	cout << endl;
 	for (unsigned int i = 0; i < Kind::Student;i++)
 		cout << "*******" << '\t';
