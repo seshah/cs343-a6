@@ -30,9 +30,11 @@ void uMain::main()
 	{
 		case 3:
 		{
+			int i;
 			stringstream ss(argv[2]);
-			if (!(ss >> seed))
+			if (!(ss >> i) || i < 0)
 				usageError(argv[0]);
+			seed = (unsigned int)i;
 		}
 		case 2:
 			configFile = argv[1];
