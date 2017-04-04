@@ -6,6 +6,7 @@
 _Task NameServer;
 _Task WATCardOffice;
 _Task Groupoff;
+_Task VendingMachine;
 class RandomGenerator;
 
 _Task Student
@@ -19,6 +20,7 @@ _Task Student
 
 	RandomGenerator *random;
 
+	VendingMachine* getNewVendingMachine();
     void main();
   public:
     Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, Groupoff &groupoff,

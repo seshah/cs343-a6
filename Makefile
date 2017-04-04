@@ -1,5 +1,5 @@
 CXX = u++							# compiler
-CXXFLAGS = -g -Wall -Wno-unused-label -MMD -O2
+CXXFLAGS = -g -Wall -Wno-unused-label -Wno-maybe-uninitialized -MMD -O2
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}	# makefile name
 
 OBJECTS1 = Config.o Student.o WATCardOffice.o Bank.o Parent.o GroupOff.o VendingMachine.o NameServer.o BottlingPlant.o Truck.o Printer.o Main.o  # files requird
