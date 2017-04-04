@@ -16,6 +16,7 @@ _Task Groupoff
 	unsigned int groupOffDelay;
 	RandomGenerator *random;
 	unsigned int numCards;
+	WATCard ** toDelete;
 	struct GiftCard 
 	{
 		WATCard::FWATCard card;

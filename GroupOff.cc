@@ -9,6 +9,7 @@ void Groupoff::main()
 {
 
 	printer->print(Printer::Kind::Groupoff, 'S');
+	toDelete = new WATCard * [numStudents];
 	for(;numCards < numStudents;) _Accept(giftCard);
 
 	while ( numCards > 0 )
@@ -25,6 +26,7 @@ void Groupoff::main()
 			int studentCard = random->generator(0, numCards-1);
 			yield(groupOffDelay);
 			GiftCard * temp = cards[studentCard];
+			toDelete[numStudents-numCards] = watCard;
 			temp->card.delivery(watCard);
 			delete temp;
 			cards.erase( cards.begin()+studentCard );
@@ -66,6 +68,8 @@ Groupoff::~Groupoff()
 	{
 		delete *it;
 	}
+	for( unsigned int i = 0; i < numStudents - numCards; i++) delete toDelete[i];
+	delete [] toDelete;
 }
 
 
